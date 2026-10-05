@@ -314,7 +314,9 @@
   .module{display:none}
   .stage.mock-m1 .module-m1,.stage.mock-m2 .module-m2,.stage.mock-m3 .module-m3,.stage.mock-m4 .module-m4{display:block}
   .stage.mock-m1 [data-mock="m1"],.stage.mock-m2 [data-mock="m2"],.stage.mock-m3 [data-mock="m3"],.stage.mock-m4 [data-mock="m4"]{background:var(--green);color:#fff}
-  .stage.role-public [data-role="public"],.stage.role-gratuit [data-role="gratuit"],.stage.role-atelier [data-role="atelier"]{background:var(--green);color:#fff}
+  .stage.role-public [data-role="public"],.stage.role-gratuit [data-role="gratuit"],.stage.role-pn [data-role="pn"],.stage.role-atelier [data-role="atelier"]{background:var(--green);color:#fff}
+  .stage.host-youtube [data-host="youtube"],.stage.host-vimeo [data-host="vimeo"]{background:var(--green);color:#fff}
+  .stage.host-youtube .only-vimeo,.stage.host-vimeo .only-youtube{display:none!important}
   .ctx-ind{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 11px;white-space:nowrap}
   .ctx-ind b{color:var(--green-dd);font-weight:700}
   .stage.show-acf .sw-acf{background:#3A6B8C}
@@ -326,6 +328,14 @@
   .stage.role-public [data-gate="atelier"],.stage.role-gratuit [data-gate="atelier"]{display:flex!important}
   .stage.role-gratuit [data-open="free"],.stage.role-atelier [data-open="free"]{display:var(--d,block)!important}
   .stage.role-atelier [data-open="atelier"]{display:var(--d,block)!important}
+  /* client PN : connecté (passe les verrous gratuits) et détenteur de la formation de la maquette 4 */
+  .stage.role-pn [data-open="free"]{display:var(--d,block)!important}
+  .stage.role-public [data-gate="pn"],.stage.role-gratuit [data-gate="pn"]{display:var(--d,flex)!important}
+  .stage.role-pn [data-open="pn"],.stage.role-atelier [data-open="pn"]{display:var(--d,block)!important}
+  .stage.role-pn .hide-pn,.stage.role-atelier .hide-pn{display:none!important}
+  .extrait-tag{position:absolute;top:11px;right:11px;z-index:3;font-size:11.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:6px;padding:4px 8px}
+  .lock-cat .lc-ctas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .lock-cat .btn-ghost-w{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
   .stage.role-atelier .hide-atelier{display:none!important}
   .stage.role-atelier .lock-ctx .lx-body{filter:none;opacity:1;pointer-events:auto}
 
@@ -438,6 +448,7 @@
         <button data-mock="m1" onClick="{{ setMock }}" class="seg-btn">1. ARV + vidéo</button>
         <button data-mock="m2" onClick="{{ setMock }}" class="seg-btn">2. Fiche vidéo focus</button>
         <button data-mock="m3" onClick="{{ setMock }}" class="seg-btn">3. Bibliothèque</button>
+        <button data-mock="m4" onClick="{{ setMock }}" class="seg-btn">4. Vidéo de formation</button>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
@@ -456,6 +467,13 @@
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
+      <span class="ctrl-lbl">Hébergement</span>
+      <div class="seg-wrap">
+        <button data-host="youtube" onClick="{{ setHost }}" class="seg-btn">YouTube</button>
+        <button data-host="vimeo" onClick="{{ setHost }}" class="seg-btn">Vimeo</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
       <button onClick="{{ toggleAcf }}" aria-label="Champs ACF" class="sw sw-acf"><span class="sw-knob"></span></button>
       <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#5c5546"><i data-lucide="database" style="width:16px;height:16px"></i>Champs ACF</span>
     </div>
@@ -468,7 +486,8 @@
       <div class="seg-wrap">
         <button data-role="public" onClick="{{ setRole }}" class="seg-btn">🆓 Public</button>
         <button data-role="gratuit" onClick="{{ setRole }}" class="seg-btn">🔐 Gratuit</button>
-        <button data-role="atelier" onClick="{{ setRole }}" class="seg-btn">💎 Payant</button>
+        <button data-role="pn" onClick="{{ setRole }}" class="seg-btn">🎓 Client PN</button>
+        <button data-role="atelier" onClick="{{ setRole }}" class="seg-btn">💎 Atelier</button>
       </div>
       <span class="ctx-ind"><i data-lucide="eye" style="width:14px;height:14px"></i>Vu comme : <b>{{ roleLabel }}</b></span>
     </div>
@@ -684,6 +703,8 @@
             <div class="pedago-note" style="flex:1 1 300px;max-width:380px">
               <div class="pn-head">⏱ Overlay déclenché après 25&nbsp;% de lecture</div>
               <p>Ce verrou est piloté par FluentPlayer selon le champ ACF <code>verrou_type = temporel_25</code>. L'utilisateur voit d'abord le player normal&nbsp;; la vidéo se met en pause automatiquement à 25&nbsp;% du temps de lecture, puis cet overlay se superpose pour inviter à la création de compte gratuit.</p>
+              <p class="only-youtube" style="margin-top:8px"><b>Hébergement YouTube : verrou incitatif.</b> La vidéo reste visible en entier sur la chaîne. Il sert à recruter des comptes gratuits, jamais à protéger un contenu payant.</p>
+              <p class="only-vimeo" style="margin-top:8px"><b>Hébergement Vimeo : verrou réel.</b> Vidéo privée, lecture limitée au domaine. C’est le cas des vidéos payantes et de toutes celles qui ne sont pas sur YouTube.</p>
             </div>
           </div>
 
@@ -822,25 +843,25 @@
   </div><!-- /module m2 -->
 
   <!-- ============================================================= -->
-  <!-- MAQUETTE 3 — Fiche vidéo publique payante (sans ARV) -->
+  <!-- MAQUETTE 4 — Vidéo de formation : extrait public, lecture complète pour le PN et l’Atelier -->
   <!-- ============================================================= -->
-  <div class="module module-retired-payant">
+  <div class="module module-m4">
   <div class="mock-sep">
-    <div class="num">3</div>
-    <div style="flex:1"><h2>Fiche vidéo 100&nbsp;% payante</h2><div class="sub">Formation Atelier, sans article ARV. Verrou catégoriel sur le player.</div></div>
+    <div class="num">4</div>
+    <div style="flex:1"><h2>Vidéo de formation</h2><div class="sub">Leçon d’un PN hébergée sur Vimeo privé. Fiche indexable avec extrait public ; lecture complète pour les clients de ce PN et les membres de l’Atelier.</div></div>
     <div class="line"></div>
   </div>
   <div class="mockwrap">
     <div class="infobar">
-      <span class="ib-url"><i data-lucide="lock" style="width:12px;height:12px"></i>permaculturedesign.fr/video/formation-design-permaculture-avance/</span>
-      <span class="ib-noindex" data-acf="is_indexable"><i data-lucide="eye-off" style="width:12px;height:12px"></i>noindex</span>
-      <span class="ib-ctx"><i data-lucide="user-x" style="width:14px;height:14px"></i>Contexte : <b>visiteur anonyme</b> · verrou catégoriel 100&nbsp;% payant</span>
+      <span class="ib-url"><i data-lucide="lock" style="width:12px;height:12px"></i>permaculturedesign.fr/video/foret-comestible-choisir-les-strates/</span>
+      <span class="ib-seo seo-index" data-acf="is_indexable (calculé)"><i data-lucide="eye" style="width:12px;height:12px"></i>&lt;meta robots="index, follow"&gt; · page d’entrée vers la formation</span>
+      <span class="ib-ctx"><i data-lucide="eye" style="width:14px;height:14px"></i>Vu comme : <b>{{ roleLabel }}</b></span>
     </div>
 
     <div class="frame">
       <div class="chrome">
         <div class="dots"><span style="background:#FF5F57"></span><span style="background:#FEBC2E"></span><span style="background:#28C840"></span></div>
-        <div class="addr"><i data-lucide="lock" style="width:12px;height:12px;color:#9aa39a"></i>permaculturedesign.fr/video/formation-design-permaculture-avance/</div>
+        <div class="addr"><i data-lucide="lock" style="width:12px;height:12px;color:#9aa39a"></i>permaculturedesign.fr/video/foret-comestible-choisir-les-strates/</div>
         <div style="width:44px"></div>
       </div>
       <div class="screen scrollx" data-screen-label="M3 · Fiche vidéo payante">
@@ -852,30 +873,37 @@
         </div>
 
         <div style="max-width:1120px;margin:0 auto;padding:0 22px 40px">
-          <div class="crumb"><a href="#">Accueil</a><i data-lucide="chevron-right" style="width:13px;height:13px"></i><a href="#">Vidéos</a><i data-lucide="chevron-right" style="width:13px;height:13px"></i><span>Design avancé en permaculture</span></div>
+          <div class="crumb"><a href="#">Accueil</a><i data-lucide="chevron-right" style="width:13px;height:13px"></i><a href="#">Vidéos</a><i data-lucide="chevron-right" style="width:13px;height:13px"></i><span>Choisir les strates d’une forêt comestible</span></div>
 
-          <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:9px" data-acf="acces_membre"><span class="badge badge-payant">💎 Payant</span><span style="font-size:12px;color:var(--ink2)">Formation réservée aux membres de l'Atelier</span></div>
-          <h1 style="font-size:32px;line-height:1.14;color:var(--green-dd);margin:0 0 12px;font-weight:700">Design avancé en permaculture : lire et concevoir son terrain</h1>
+          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px;font-size:12.5px;color:var(--ink2)" data-acf="acces = pn · pn_requis"><i data-lucide="lock" style="width:14px;height:14px" class="hide-pn"></i>Leçon 3 de la formation <a href="#" style="color:var(--green-d);font-weight:600">Concevoir sa forêt comestible</a></div>
+          <h1 style="font-size:32px;line-height:1.14;color:var(--green-dd);margin:0 0 12px;font-weight:700">Choisir les strates d’une forêt comestible</h1>
           <div class="meta-row" data-acf="duree · niveau" style="margin-bottom:16px">
-            <span class="mi"><i data-lucide="mic" style="width:15px;height:15px"></i>Avec Benjamin Broustey</span>
-            <span class="mi"><i data-lucide="clock" style="width:15px;height:15px"></i>1&nbsp;h&nbsp;12</span>
-            <span class="mi"><i data-lucide="layers" style="width:15px;height:15px"></i>Module 4 · Formation Atelier</span>
+            <span class="mi"><i data-lucide="mic" style="width:15px;height:15px"></i>Permaculture Design</span>
+            <span class="mi"><i data-lucide="clock" style="width:15px;height:15px"></i>24&nbsp;min</span>
+            <span class="mi"><i data-lucide="layers" style="width:15px;height:15px"></i>Leçon 3 sur 12</span>
           </div>
 
-          <!-- poster verrouillé -->
-          <div class="player" style="margin-bottom:22px;background:linear-gradient(135deg,#7A5A3C,#3A2617)" data-acf="video_source · youtube_id">
-            <span class="player-fluent-tag"><i data-lucide="play" style="width:11px;height:11px"></i>FluentPlayer</span>
-            <span class="player-dur">1:12:40</span>
-            <button class="play-btn" data-open="atelier" style="--d:flex" onClick="{{ noop }}"><i data-lucide="play" style="width:26px;height:26px;margin-left:3px"></i></button>
-            <div class="lock-cat" data-gate="atelier" data-acf-bl="verrou_type">
+          <!-- player : extrait pour qui n’a pas accès, vidéo complète pour le PN et l’Atelier -->
+          <div class="player" style="margin-bottom:14px;background:linear-gradient(135deg,#3E6B4E,#1E3A28)" data-acf="video_source = vimeo · vimeo_id · extrait_vimeo_id · lecture_partielle">
+            <span class="player-fluent-tag"><i data-lucide="play" style="width:11px;height:11px"></i>Vimeo privé · FluentPlayer</span>
+            <span class="extrait-tag hide-pn">Extrait · 2 min</span>
+            <span class="player-dur" data-open="pn">24:10</span>
+            <button class="play-btn" style="--d:flex" onClick="{{ noop }}"><i data-lucide="play" style="width:26px;height:26px;margin-left:3px"></i></button>
+            <div class="lock-cat" data-gate="pn" data-acf-bl="lecture_partielle = extrait">
               <span class="lc-ic"><i data-lucide="lock" style="width:26px;height:26px"></i></span>
-              <h4>Contenu réservé à l'Atelier</h4>
-              <p>Cette formation fait partie de l'Atelier. Rejoignez la communauté pour visionner l'intégralité de nos formations en illimité.</p>
-              <a href="#" class="btn btn-yellow"><i data-lucide="sparkles" style="width:17px;height:17px"></i>Rejoindre l'Atelier pour visionner (89&nbsp;€/an)</a>
-              <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,.65)">Déjà membre&nbsp;? <a href="#" style="color:#FFDE67">Se connecter</a></div>
+              <h4>La suite est dans la formation</h4>
+              <p>Cette leçon fait partie de « Concevoir sa forêt comestible ». Achetez la formation, ou rejoignez L’Atelier pour accéder à toutes les formations.</p>
+              <div class="lc-ctas">
+                <a href="#" class="btn btn-yellow"><i data-lucide="graduation-cap" style="width:17px;height:17px"></i>Acheter la formation</a>
+                <a href="#" class="btn btn-ghost-w"><i data-lucide="sparkles" style="width:17px;height:17px"></i>L’Atelier · 89&nbsp;€/an</a>
+              </div>
+              <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,.65)">Déjà inscrit&nbsp;? <a href="#" style="color:#FFDE67">Se connecter</a></div>
             </div>
           </div>
-          <div class="anno"><i data-lucide="info" style="width:14px;height:14px"></i>Verrou catégoriel : aucune lecture possible. Le poster est remplacé par une invitation à rejoindre l'Atelier.</div>
+          <div class="pedago-note" style="margin-bottom:18px;max-width:none">
+            <div class="pn-head">🔒 Verrou réel : deux fichiers Vimeo</div>
+            <p>Sans droit d’accès, la page charge seulement l’extrait (<code>extrait_vimeo_id</code>, monté à part). L’identifiant de la vidéo complète n’apparaît jamais dans le code de la page. Vimeo limite la lecture au domaine permaculturedesign.fr. Droit d’accès : membre de L’Atelier, ou tag FluentCRM « Client PN » d’une des formations listées dans <code>pn_requis</code>.</p>
+          </div>
 
           <!-- bloc éditorial enrichi (remplace l'encart article) -->
           <div class="col2" style="{{ col2Style }}">
@@ -899,9 +927,11 @@
             </div>
 
             <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
-              <div class="card hide-atelier" style="padding:18px;border:1px solid var(--terra-line);background:var(--terra-soft)">
-                <div style="font-family:var(--serif);font-size:19px;font-weight:600;color:var(--terra-d);margin-bottom:6px">Accès inclus dans l'Atelier</div>
-                <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 14px">40+ formations, calendriers, communauté et réponses à vos questions.</p>
+              <div class="card hide-pn" style="padding:18px;border:1px solid var(--terra-line);background:var(--terra-soft)">
+                <div style="font-family:var(--serif);font-size:19px;font-weight:600;color:var(--terra-d);margin-bottom:6px">Deux façons d’accéder à cette leçon</div>
+                <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 10px">La formation seule, avec ses 12 leçons et son espace d’entraide.</p>
+                <a href="#" class="btn btn-primary" style="width:100%;margin-bottom:14px"><i data-lucide="graduation-cap" style="width:16px;height:16px"></i>Acheter la formation</a>
+                <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 14px">Ou L’Atelier : toutes les formations, la communauté et les réponses à vos questions.</p>
                 <div class="stat-strip" style="margin-bottom:16px">
                   <span class="st"><b>40+</b><span>formations</span></span>
                   <span class="st"><b>+ 12 500</b><span>élèves</span></span>
@@ -909,13 +939,13 @@
                 <a href="#" class="btn btn-accent" style="width:100%"><i data-lucide="sparkles" style="width:16px;height:16px"></i>Rejoindre · 89&nbsp;€/an</a>
               </div>
 
-              <div class="contrib"><span class="cv">BB</span><div style="flex:1;min-width:0"><div style="font-weight:700;color:var(--green-dd);font-size:15px">Benjamin Broustey</div><div style="font-size:12.5px;color:var(--ink2);line-height:1.45;margin-top:2px">Formateur en permaculture, 14 ans d'expertise terrain.</div></div></div>
+              <div class="contrib"><span class="cv">PD</span><div style="flex:1;min-width:0"><div style="font-weight:700;color:var(--green-dd);font-size:15px">Permaculture Design</div><div style="font-size:12.5px;color:var(--ink2);line-height:1.45;margin-top:2px">Contributeur officiel</div></div></div>
 
               <div class="relbox">
                 <div style="font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Dans la même formation</div>
                 <div style="display:flex;flex-direction:column;gap:8px">
-                  <a href="#" class="fopt" style="text-decoration:none"><span class="badge badge-payant" style="padding:3px 8px">💎</span>Module 3 · Gestion de l'eau<i data-lucide="chevron-right" style="width:16px;height:16px;color:#b7bcae;margin-left:auto"></i></a>
-                  <a href="#" class="fopt" style="text-decoration:none"><span class="badge badge-payant" style="padding:3px 8px">💎</span>Module 5 · Les guildes<i data-lucide="chevron-right" style="width:16px;height:16px;color:#b7bcae;margin-left:auto"></i></a>
+                  <a href="#" class="fopt" style="text-decoration:none"><i data-lucide="lock" class="hide-pn" style="width:14px;height:14px;color:var(--terra-d)"></i>Leçon 2 · Lire son terrain<i data-lucide="chevron-right" style="width:16px;height:16px;color:#b7bcae;margin-left:auto"></i></a>
+                  <a href="#" class="fopt" style="text-decoration:none"><i data-lucide="lock" class="hide-pn" style="width:14px;height:14px;color:var(--terra-d)"></i>Leçon 4 · Les guildes<i data-lucide="chevron-right" style="width:16px;height:16px;color:#b7bcae;margin-left:auto"></i></a>
                 </div>
               </div>
             </div>
@@ -933,10 +963,10 @@
       </div>
     </div>
   </div>
-  </div><!-- /module m3 -->
+  </div><!-- /module m4 -->
 
   <!-- ============================================================= -->
-  <!-- MAQUETTE 4 — Bibliothèque /videos/ -->
+  <!-- MAQUETTE 3 — Bibliothèque /videos/ -->
   <!-- ============================================================= -->
   <div class="module module-m3">
   <div class="mock-sep">
@@ -1092,7 +1122,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
 class Component extends DCLogic {
-  state = { format: 'desktop', activeMock: 'm1', role: 'public', showAcf: false, showNotes: false, chapM1Open: false, chap: { m1: 0, m2: 0 }, sort: 'recent', sheetOpen: false, hasArticle: true, contribCase: 1, clapped: false, faved: false, booked: false };
+  state = { format: 'desktop', activeMock: 'm1', role: 'public', host: 'youtube', showAcf: false, showNotes: false, chapM1Open: false, chap: { m1: 0, m2: 0 }, sort: 'recent', sheetOpen: false, hasArticle: true, contribCase: 1, clapped: false, faved: false, booked: false };
 
   componentDidMount() { this._mounted = true; this.renderIcons(); }
   componentDidUpdate() { this.renderIcons(); }
@@ -1116,6 +1146,7 @@ class Component extends DCLogic {
   setSort(e) { this.setState({ sort: e.currentTarget.getAttribute('data-sort') }); }
   setMock(e) { this.setState({ activeMock: e.currentTarget.getAttribute('data-mock') }); }
   setRole(e) { this.setState({ role: e.currentTarget.getAttribute('data-role') }); }
+  setHost(e) { this.setState({ host: e.currentTarget.getAttribute('data-host') }); }
   toggleAcf() { this.setState(s => ({ showAcf: !s.showAcf })); }
   setArv(e) { this.setState({ hasArticle: e.currentTarget.getAttribute('data-arv') === 'yes' }); }
   setContrib(e) { this.setState({ contribCase: parseInt(e.currentTarget.getAttribute('data-contrib'), 10) }); }
@@ -1131,13 +1162,14 @@ class Component extends DCLogic {
 
   renderVals() {
     const isM = this.state.format === 'mobile';
-    const stageClass = 'stage ' + (isM ? 'format-mobile' : 'format-desktop') + ' mock-' + this.state.activeMock + ' role-' + this.state.role + (this.state.showNotes ? ' show-notes' : '') + (this.state.showAcf ? ' show-acf' : '') + ' arv-' + (this.state.hasArticle ? 'yes' : 'no') + ' contrib-' + this.state.contribCase;
-    const roleRank = { public: 0, gratuit: 1, atelier: 2 }[this.state.role];
-    const reqRank = { public: 0, gratuit: 1, payant: 2 };
-    const roleLabel = { public: 'Visiteur anonyme', gratuit: 'Membre gratuit', atelier: 'Membre Atelier' }[this.state.role];
+    const stageClass = 'stage ' + (isM ? 'format-mobile' : 'format-desktop') + ' mock-' + this.state.activeMock + ' role-' + this.state.role + ' host-' + this.state.host + (this.state.showNotes ? ' show-notes' : '') + (this.state.showAcf ? ' show-acf' : '') + ' arv-' + (this.state.hasArticle ? 'yes' : 'no') + ' contrib-' + this.state.contribCase;
+    const role = this.state.role;
+    // accès : public, gratuit (compte), pn (formation achetée ou Atelier), payant (Atelier seul)
+    const canSee = { public: () => true, gratuit: () => role !== 'public', pn: () => role === 'pn' || role === 'atelier', payant: () => role === 'atelier' };
+    const roleLabel = { public: 'Visiteur anonyme', gratuit: 'Membre gratuit', pn: 'Client de la formation', atelier: 'Membre Atelier' }[role];
     const ha = this.state.hasArticle;
     const cc = this.state.contribCase;
-    const mkLock = (access) => ({ locked: reqRank[access] > roleRank, lockLabel: access === 'payant' ? 'Réservé à l’Atelier' : 'Compte gratuit requis' });
+    const mkLock = (access) => ({ locked: !canSee[access](), lockLabel: access === 'payant' ? 'Réservé à l’Atelier' : access === 'pn' ? 'Formation ou Atelier' : 'Compte gratuit requis' });
 
     const chapStyle = (active) => active
       ? 'background:#EAF2EA;box-shadow:inset 3px 0 0 #4A7C59;'
@@ -1177,7 +1209,7 @@ class Component extends DCLogic {
     // badges rendered as strings won't parse HTML in template holes — use element refs instead
     const badge = (t) => {
       const cls = t === 'public' ? 'badge badge-public' : t === 'gratuit' ? 'badge badge-gratuit' : 'badge badge-payant';
-      const label = t === 'public' ? '🆓 Public' : t === 'gratuit' ? '🔐 Gratuit' : '💎 Payant';
+      const label = t === 'public' ? '🆓 Public' : t === 'gratuit' ? '🔐 Gratuit' : t === 'pn' ? '🎓 Formation' : '💎 Atelier';
       return React.createElement('span', { className: cls }, label);
     };
 
@@ -1193,10 +1225,10 @@ class Component extends DCLogic {
       { title: 'Le mulch en permaculture : BRF, paillage et broyeur', dur: '18:24', cat: 'Sol & fertilité', author: 'Permaculture Design', grad: G.green, access: 'gratuit', badge: badge('gratuit') },
       { title: 'Le BRF de A à Z : fabriquer son bois raméal fragmenté', dur: '12:07', cat: 'Sol & fertilité', author: 'Franck Nathié', grad: G.olive, access: 'public', badge: badge('public') },
       { title: 'Gérer l\u2019eau au jardin : noues, baissières et récupération', dur: '24:51', cat: 'Gestion de l\u2019eau', author: 'Gilles Leblais', grad: G.teal, access: 'payant', badge: badge('payant') },
-      { title: 'Créer une forêt comestible en 7 étapes', dur: '31:15', cat: 'Vergers & jardin-forêt', author: 'Permaculture Design', grad: G.pine, access: 'payant', badge: badge('payant') },
+      { title: 'Créer une forêt comestible en 7 étapes', dur: '31:15', cat: 'Vergers & jardin-forêt', author: 'Permaculture Design', grad: G.pine, access: 'pn', badge: badge('pn') },
       { title: 'Le poulailler mobile : concevoir un tracteur à poules', dur: '09:42', cat: 'Biodiversité & faune', author: 'Invités', grad: G.bark, access: 'public', badge: badge('public') },
       { title: 'Compost thermophile : monter à 60\u00a0°C en 4 jours', dur: '15:33', cat: 'Sol & fertilité', author: 'Franck Nathié', grad: G.earth, access: 'gratuit', badge: badge('gratuit') },
-      { title: 'Les guildes végétales autour du pommier', dur: '21:08', cat: 'Vergers & jardin-forêt', author: 'Gilles Leblais', grad: G.moss, access: 'payant', badge: badge('payant') },
+      { title: 'Les guildes végétales autour du pommier', dur: '21:08', cat: 'Vergers & jardin-forêt', author: 'Gilles Leblais', grad: G.moss, access: 'pn', badge: badge('pn') },
       { title: 'Buttes de culture : lasagnes, hügelkultur, plessis', dur: '27:46', cat: 'Potager & maraîchage', author: 'Permaculture Design', grad: G.sage, access: 'gratuit', badge: badge('gratuit') },
       { title: 'Nourrir un sol vivant : couverts, mycorhizes, vers', dur: '19:57', cat: 'Sol & fertilité', author: 'Invités', grad: G.clay, access: 'public', badge: badge('public') },
     ];
@@ -1242,6 +1274,7 @@ class Component extends DCLogic {
       setChapter: this.setChapter.bind(this),
       setMock: this.setMock.bind(this),
       setRole: this.setRole.bind(this),
+      setHost: this.setHost.bind(this),
       toggleAcf: this.toggleAcf.bind(this),
       roleLabel,
       toggleChapM1: this.toggleChapM1.bind(this),
