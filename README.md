@@ -9,25 +9,45 @@ ses images dans `assets/`.
 
 ## Créations en ligne
 
-| Création   | URL à coller dans Notion (`/embed`)                          |
-|------------|--------------------------------------------------------------|
-| Fiche livre — *Le Guide de la Permaculture* | https://pcd-equipe.github.io/pcd-embeds/fiche-livre.html |
-| Page auteur du livre | https://pcd-equipe.github.io/pcd-embeds/livre-auteur.html |
-| Carte compacte (livre) | https://pcd-equipe.github.io/pcd-embeds/carte-compacte.html |
-| Fiche recette — *Crukies* | https://pcd-equipe.github.io/pcd-embeds/fiche-recette.html |
-| Contributeur | https://pcd-equipe.github.io/pcd-embeds/contributeur.html |
-| Glossaire | https://pcd-equipe.github.io/pcd-embeds/glossaire/ |
-| Fiche plante — *Tomate* (3 colonnes) | https://pcd-equipe.github.io/pcd-embeds/plante/ |
-| Vidéo (4 maquettes) | https://pcd-equipe.github.io/pcd-embeds/video/ |
-| Toilette — *TLB* | https://pcd-equipe.github.io/pcd-embeds/toilette/ |
-| Fiche variété — *Cœur de Bœuf* (côte à côte) | https://pcd-equipe.github.io/pcd-embeds/variete/ |
-| Simulateur assainissement | https://pcd-equipe.github.io/pcd-embeds/simulateur-assainissement.html |
+Ce dépôt est la vitrine publique : il ne contient que des copies publiées, intégrées dans Notion.
+Les sources de travail des outils sont dans le dépôt privé `PCD-Equipe/permaculture-design-outils`.
 
-> ⚙️ Le **Glossaire** utilise le nouveau format « design system » de Claude design
-> (composants React chargés depuis le CDN unpkg au runtime). Il vit dans son propre
-> dossier `glossaire/` avec ses dépendances (`_ds/`, `support.js`).
-> Nécessite une connexion internet pour s'afficher (OK dans un embed Notion).
-| Contributeur — version impression | https://pcd-equipe.github.io/pcd-embeds/contributeur-print.html |
+### Charte graphique
+
+| Création | URL à coller dans Notion (`/embed`) |
+|---|---|
+| Charte graphique | https://pcd-equipe.github.io/pcd-embeds/charte-graphique.html |
+| Variables CSS de la charte | https://pcd-equipe.github.io/pcd-embeds/pcd-tokens.css |
+
+### Outils
+
+| Outil | URL |
+|---|---|
+| Simulateur assainissement | https://pcd-equipe.github.io/pcd-embeds/simulateur-assainissement.html |
+| Toilette (*TLB*) | https://pcd-equipe.github.io/pcd-embeds/toilette/ |
+
+### Maquettes de CPT
+
+| Maquette | URL | Statut |
+|---|---|---|
+| Vidéo (4 maquettes) | https://pcd-equipe.github.io/pcd-embeds/video/ | En cours |
+| Fiche plante (*Tomate*, 3 colonnes) | https://pcd-equipe.github.io/pcd-embeds/plante/ | Référence |
+| Glossaire | https://pcd-equipe.github.io/pcd-embeds/glossaire/ | Référence |
+| Fiche recette (*Crukies*) | https://pcd-equipe.github.io/pcd-embeds/fiche-recette.html | Référence |
+| Contributeur | https://pcd-equipe.github.io/pcd-embeds/contributeur.html | Référence |
+| Fiche livre (*Le Guide de la Permaculture*) | https://pcd-equipe.github.io/pcd-embeds/fiche-livre.html | Périmée (bandeau) |
+| Page auteur du livre | https://pcd-equipe.github.io/pcd-embeds/livre-auteur.html | Périmée (bandeau) |
+| Carte compacte (livre) | https://pcd-equipe.github.io/pcd-embeds/carte-compacte.html | Périmée (bandeau) |
+
+Les maquettes livre ont été remplacées par le template Bricks de la fiche livre (dépôt `pcd-site`).
+Elles restent en ligne parce que les onglets Rendu des CPT Livres et Auteurs les intègrent encore.
+
+Retirées le 5 octobre 2026 (copies dans `pcd-site/docs/historique/maquettes-pcd-embeds/`) :
+`variete/` (CPT Variétés abandonné) et `contributeur-print.html` (intégré nulle part).
+
+> Le **Glossaire**, la **Toilette**, la **Plante** et la **Vidéo** utilisent le format « design system » de Claude design
+> (composants React chargés depuis le CDN unpkg au runtime), chacun dans son dossier avec `_ds/` et `support.js`.
+> Il faut une connexion internet pour les afficher (pas de souci dans un embed Notion).
 
 > Les images de chaque création sont rangées dans `assets/<création>/` pour
 > éviter toute collision de noms entre fiches.
