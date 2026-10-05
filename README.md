@@ -4,30 +4,30 @@ Pages HTML autonomes hébergées sur **GitHub Pages**, intégrées dans Notion v
 des blocs `/embed`. Chaque création (issue de Claude design) = un fichier HTML +
 ses images dans `assets/`.
 
-- **Dépôt :** https://github.com/PCD33/pcd-embeds
-- **Site :** https://pcd33.github.io/pcd-embeds/
+- **Dépôt :** https://github.com/PCD-Equipe/pcd-embeds
+- **Site :** https://pcd-equipe.github.io/pcd-embeds/
 
 ## Créations en ligne
 
 | Création   | URL à coller dans Notion (`/embed`)                          |
 |------------|--------------------------------------------------------------|
-| Fiche livre — *Le Guide de la Permaculture* | https://pcd33.github.io/pcd-embeds/fiche-livre.html |
-| Page auteur du livre | https://pcd33.github.io/pcd-embeds/livre-auteur.html |
-| Carte compacte (livre) | https://pcd33.github.io/pcd-embeds/carte-compacte.html |
-| Fiche recette — *Crukies* | https://pcd33.github.io/pcd-embeds/fiche-recette.html |
-| Contributeur | https://pcd33.github.io/pcd-embeds/contributeur.html |
-| Glossaire | https://pcd33.github.io/pcd-embeds/glossaire/ |
-| Fiche plante — *Tomate* (3 colonnes) | https://pcd33.github.io/pcd-embeds/plante/ |
-| Vidéo (4 maquettes) | https://pcd33.github.io/pcd-embeds/video/ |
-| Toilette — *TLB* | https://pcd33.github.io/pcd-embeds/toilette/ |
-| Fiche variété — *Cœur de Bœuf* (côte à côte) | https://pcd33.github.io/pcd-embeds/variete/ |
-| Simulateur assainissement | https://pcd33.github.io/pcd-embeds/simulateur-assainissement.html |
+| Fiche livre — *Le Guide de la Permaculture* | https://pcd-equipe.github.io/pcd-embeds/fiche-livre.html |
+| Page auteur du livre | https://pcd-equipe.github.io/pcd-embeds/livre-auteur.html |
+| Carte compacte (livre) | https://pcd-equipe.github.io/pcd-embeds/carte-compacte.html |
+| Fiche recette — *Crukies* | https://pcd-equipe.github.io/pcd-embeds/fiche-recette.html |
+| Contributeur | https://pcd-equipe.github.io/pcd-embeds/contributeur.html |
+| Glossaire | https://pcd-equipe.github.io/pcd-embeds/glossaire/ |
+| Fiche plante — *Tomate* (3 colonnes) | https://pcd-equipe.github.io/pcd-embeds/plante/ |
+| Vidéo (4 maquettes) | https://pcd-equipe.github.io/pcd-embeds/video/ |
+| Toilette — *TLB* | https://pcd-equipe.github.io/pcd-embeds/toilette/ |
+| Fiche variété — *Cœur de Bœuf* (côte à côte) | https://pcd-equipe.github.io/pcd-embeds/variete/ |
+| Simulateur assainissement | https://pcd-equipe.github.io/pcd-embeds/simulateur-assainissement.html |
 
 > ⚙️ Le **Glossaire** utilise le nouveau format « design system » de Claude design
 > (composants React chargés depuis le CDN unpkg au runtime). Il vit dans son propre
 > dossier `glossaire/` avec ses dépendances (`_ds/`, `support.js`).
 > Nécessite une connexion internet pour s'afficher (OK dans un embed Notion).
-| Contributeur — version impression | https://pcd33.github.io/pcd-embeds/contributeur-print.html |
+| Contributeur — version impression | https://pcd-equipe.github.io/pcd-embeds/contributeur-print.html |
 
 > Les images de chaque création sont rangées dans `assets/<création>/` pour
 > éviter toute collision de noms entre fiches.
