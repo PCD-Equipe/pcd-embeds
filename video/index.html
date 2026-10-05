@@ -896,7 +896,7 @@
   <div class="module module-m4">
   <div class="mock-sep">
     <div class="num">4</div>
-    <div style="flex:1"><h2>Vidéo de formation</h2><div class="sub">Leçon d’un PN hébergée sur Vimeo privé. Fiche indexable avec extrait public ; lecture complète pour les clients de ce PN et les membres de l’Atelier.</div></div>
+    <div style="flex:1"><h2>Vidéo de formation (fiche vitrine)</h2><div class="sub">Leçon choisie d’un PN, hébergée sur Vimeo privé. La fiche est indexable et ne montre qu’un extrait ; la leçon complète se regarde dans FluentCommunity, qui suit la progression.</div></div>
     <div class="line"></div>
   </div>
   <div class="mockwrap">
@@ -923,7 +923,7 @@
         <div style="max-width:1120px;margin:0 auto;padding:0 22px 40px">
           <div class="crumb"><a href="#">Accueil</a><i data-lucide="chevron-right" style="width:13px;height:13px"></i><a href="#">Vidéos</a><i data-lucide="chevron-right" style="width:13px;height:13px"></i><span>Choisir les strates d’une forêt comestible</span></div>
 
-          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px;font-size:12.5px;color:var(--ink2)" data-acf="acces = pn · pn_requis"><i data-lucide="lock" style="width:14px;height:14px" class="hide-pn"></i>Leçon 3 de la formation <a href="#" style="color:var(--green-d);font-weight:600">Concevoir sa forêt comestible</a></div>
+          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px;font-size:12.5px;color:var(--ink2)" data-acf="acces_membre = pn · formations · lecon_fc"><i data-lucide="lock" style="width:14px;height:14px" class="hide-pn"></i>Leçon 3 de la formation <a href="#" style="color:var(--green-d);font-weight:600">Concevoir sa forêt comestible</a></div>
           <h1 style="font-size:32px;line-height:1.14;color:var(--green-dd);margin:0 0 12px;font-weight:700">Choisir les strates d’une forêt comestible</h1>
           <div class="meta-row" data-acf="duree · niveau" style="margin-bottom:16px">
             <span class="mi"><i data-lucide="mic" style="width:15px;height:15px"></i>Permaculture Design</span>
@@ -931,11 +931,10 @@
             <span class="mi"><i data-lucide="layers" style="width:15px;height:15px"></i>Leçon 3 sur 12</span>
           </div>
 
-          <!-- player : extrait pour qui n’a pas accès, vidéo complète pour le PN et l’Atelier -->
-          <div class="player" style="margin-bottom:14px;background:linear-gradient(135deg,#3E6B4E,#1E3A28)" data-acf="video_source = vimeo · vimeo_id · extrait_vimeo_id · lecture_partielle">
-            <span class="player-fluent-tag"><i data-lucide="play" style="width:11px;height:11px"></i>Vimeo privé · FluentPlayer</span>
-            <span class="extrait-tag hide-pn">Extrait · 2 min</span>
-            <span class="player-dur" data-open="pn">24:10</span>
+          <!-- player : la fiche ne lit que l'extrait ; la leçon complète se regarde dans FluentCommunity -->
+          <div class="player" style="margin-bottom:14px;background:linear-gradient(135deg,#3E6B4E,#1E3A28)" data-acf="extrait_vimeo_id · lecture_partielle = extrait">
+            <span class="player-fluent-tag"><i data-lucide="play" style="width:11px;height:11px"></i>Extrait Vimeo · FluentPlayer</span>
+            <span class="extrait-tag">Extrait · 2 min sur 24</span>
             <button class="play-btn" style="--d:flex" onClick="{{ noop }}"><i data-lucide="play" style="width:26px;height:26px;margin-left:3px"></i></button>
             <div class="lock-cat" data-gate="pn" data-acf-bl="lecture_partielle = extrait">
               <span class="lc-ic"><i data-lucide="lock" style="width:26px;height:26px"></i></span>
@@ -947,23 +946,50 @@
               </div>
               <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,.65)">Déjà inscrit&nbsp;? <a href="#" style="color:#FFDE67">Se connecter</a></div>
             </div>
+            <div class="lock-cat" data-open="pn" style="--d:flex;background:linear-gradient(160deg,rgba(30,58,40,.78),rgba(18,36,24,.92))" data-acf-bl="formations · lecon_fc">
+              <span class="lc-ic"><i data-lucide="graduation-cap" style="width:26px;height:26px"></i></span>
+              <h4>Fin de l’extrait</h4>
+              <p>Vous suivez « Concevoir sa forêt comestible ». La leçon complète vous attend dans la formation, où votre progression est enregistrée.</p>
+              <div class="lc-ctas">
+                <a href="#" class="btn btn-yellow"><i data-lucide="play" style="width:17px;height:17px"></i>Continuer la leçon dans la formation</a>
+              </div>
+            </div>
           </div>
           <div class="pedago-note" style="margin-bottom:18px;max-width:none">
-            <div class="pn-head">🔒 Verrou réel : deux fichiers Vimeo</div>
-            <p>Sans droit d’accès, la page charge seulement l’extrait (<code>extrait_vimeo_id</code>, monté à part). L’identifiant de la vidéo complète n’apparaît jamais dans le code de la page. Vimeo limite la lecture au domaine permaculturedesign.fr. Droit d’accès : membre de L’Atelier, ou tag FluentCRM « Client PN » d’une des formations listées dans <code>pn_requis</code>.</p>
+            <div class="pn-head">🔒 Une seule vidéo complète, regardée à un seul endroit</div>
+            <p>La fiche ne charge que l’extrait (<code>extrait_vimeo_id</code>, monté à part) : l’identifiant de la vidéo complète n’apparaît jamais dans la page. La leçon complète se regarde dans FluentCommunity, qui enregistre la progression. Le bouton change selon l’accès : membre de L’Atelier ou inscrit à une formation de <code>formations</code> → « Continuer la leçon » (lien construit avec <code>lecon_fc</code>) ; sinon → acheter la formation ou rejoindre L’Atelier.</p>
           </div>
 
           <!-- bloc éditorial enrichi (remplace l'encart article) -->
           <div class="col2" style="{{ col2Style }}">
             <div style="min-width:0">
               <h2 class="sec-h">Ce que vous allez apprendre</h2>
-              <p style="font-size:15px;line-height:1.7;color:var(--ink);margin:8px 0 16px;text-wrap:pretty" data-acf="description">Concevoir un lieu ne s'improvise pas : cela commence par une lecture fine du paysage. Dans ce module avancé, vous apprenez à observer votre terrain avant d'y toucher : relief, circulation de l'eau, vents dominants, ensoleillement, sols et micro-climats. Chaque information devient une contrainte ou une ressource dans votre plan de design.</p>
-              <p style="font-size:15px;line-height:1.7;color:var(--ink);margin:0 0 16px;text-wrap:pretty">Nous déroulons ensuite une méthode de zonage complète (zones 0 à 5) et l'analyse des secteurs, pour placer chaque élément au bon endroit : le poulailler près de la maison, le verger là où l'eau s'accumule, la mare au point bas. Vous repartez avec une trame de conception applicable immédiatement à votre propre projet, quel que soit sa taille.</p>
-              <p style="font-size:15px;line-height:1.7;color:var(--ink);margin:0 0 20px;text-wrap:pretty">La dernière partie est consacrée aux erreurs les plus fréquentes des débutants et à la manière de séquencer les travaux dans le temps, pour ne pas s'épuiser et laisser le lieu se révéler saison après saison.</p>
+              <p style="font-size:15px;line-height:1.7;color:var(--ink);margin:8px 0 16px;text-wrap:pretty" data-acf="resume_court">Une forêt comestible s’organise en étages, de la canopée au couvre-sol. Cette leçon montre comment répartir les plantes entre ces strates selon la lumière, la place et le temps qu’elles mettront à pousser.</p>
+              <p style="font-size:15px;line-height:1.7;color:var(--ink);margin:0 0 20px;text-wrap:pretty">[À COMPLÉTER : résumé réel de la leçon, 150 mots au plus. C’est le texte que Google indexe.]</p>
+              <h2 class="sec-h" style="margin-top:4px">Chapitres</h2>
+              <ol style="font-size:14.5px;line-height:1.8;color:var(--ink);margin:6px 0 20px;padding-left:20px" data-acf="chapitres (titres seuls)">
+                <li>Les strates d’une forêt comestible</li>
+                <li>Lire la lumière sur son terrain</li>
+                <li>Choisir les arbres de canopée</li>
+                <li>Remplir les étages intermédiaires</li>
+              </ol>
 
               <div style="display:grid;gap:14px;grid-template-columns:1fr 1fr;margin-bottom:20px">
-                <div style="border-radius:12px;aspect-ratio:4/3;background:linear-gradient(135deg,#5E7C4A,#33471F);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;gap:6px"><i data-lucide="image" style="width:18px;height:18px"></i>Lecture du relief</div>
-                <div style="border-radius:12px;aspect-ratio:4/3;background:linear-gradient(135deg,#3D6B6B,#22403E);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;gap:6px"><i data-lucide="image" style="width:18px;height:18px"></i>Plan de zonage</div>
+                <div style="border-radius:12px;aspect-ratio:4/3;background:linear-gradient(135deg,#5E7C4A,#33471F);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;gap:6px"><i data-lucide="image" style="width:18px;height:18px"></i>Schéma des strates</div>
+                <div style="border-radius:12px;aspect-ratio:4/3;background:linear-gradient(135deg,#3D6B6B,#22403E);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;gap:6px"><i data-lucide="image" style="width:18px;height:18px"></i>Plan de plantation</div>
+              </div>
+
+              <!-- transcription : complète pour qui a accès, absente du code de la page sinon -->
+              <details class="transcript" data-open="pn" style="--d:block;margin:0 0 18px" data-acf="transcription (accès)">
+                <summary><i data-lucide="file-text" style="width:18px;height:18px;color:var(--green)"></i>Transcription de la leçon<span class="chev"><i data-lucide="chevron-down" style="width:18px;height:18px"></i></span></summary>
+                <div class="tbody"><p>[Transcription Whisper complète, servie seulement aux inscrits de la formation et aux membres de L’Atelier.]</p></div>
+              </details>
+              <div class="hide-pn" style="display:flex;align-items:center;gap:9px;margin:0 0 18px;padding:12px 14px;border:1px dashed var(--terra-line);border-radius:10px;font-size:13.5px;color:var(--ink2)" data-acf="transcription (sans accès)">
+                <i data-lucide="lock" style="width:16px;height:16px;color:var(--terra-d)"></i>La transcription complète est réservée aux participants de la formation.
+              </div>
+              <div class="pedago-note" style="margin-bottom:18px;max-width:none">
+                <div class="pn-head">📝 La transcription suit l’accès à la vidéo</div>
+                <p>Une transcription complète donnerait tout le contenu de la leçon. Sans accès, la page ne contient ni la transcription ni sa balise <code>transcript</code> dans le JSON-LD : seuls le résumé et les titres de chapitres sont publics, et ce sont eux que Google indexe. Masquer en CSS ne suffit pas, le texte doit être absent du HTML envoyé.</p>
               </div>
 
               <div class="callout" data-acf="ressources_complementaires">
@@ -979,12 +1005,13 @@
                 <div style="font-family:var(--serif);font-size:19px;font-weight:600;color:var(--terra-d);margin-bottom:6px">Deux façons d’accéder à cette leçon</div>
                 <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 10px">La formation seule, avec ses 12 leçons et son espace d’entraide.</p>
                 <a href="#" class="btn btn-primary" style="width:100%;margin-bottom:14px"><i data-lucide="graduation-cap" style="width:16px;height:16px"></i>Acheter la formation</a>
-                <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 14px">Ou L’Atelier : toutes les formations, la communauté et les réponses à vos questions.</p>
-                <div class="stat-strip" style="margin-bottom:16px">
-                  <span class="st"><b>40+</b><span>formations</span></span>
-                  <span class="st"><b>+ 12 500</b><span>élèves</span></span>
-                </div>
-                <a href="#" class="btn btn-accent" style="width:100%"><i data-lucide="sparkles" style="width:16px;height:16px"></i>Rejoindre · 89&nbsp;€/an</a>
+                <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 14px">Ou L’Atelier : les 12 formations, la communauté et les réponses à vos questions.</p>
+                <a href="#" class="btn btn-accent" style="width:100%"><i data-lucide="sparkles" style="width:16px;height:16px"></i>Rejoindre L’Atelier · 89&nbsp;€/an</a>
+              </div>
+              <div class="card" data-open="pn" style="padding:18px;border:1px solid var(--green-100);background:var(--green-soft)" data-acf="formations · lecon_fc">
+                <div style="font-family:var(--serif);font-size:19px;font-weight:600;color:var(--green-dd);margin-bottom:6px">Votre formation</div>
+                <p style="font-size:13.5px;color:var(--ink);line-height:1.55;margin:0 0 14px">Concevoir sa forêt comestible · leçon 3 sur 12</p>
+                <a href="#" class="btn btn-primary" style="width:100%"><i data-lucide="play" style="width:16px;height:16px"></i>Continuer la leçon</a>
               </div>
 
               <div class="contrib"><span class="cv">PD</span><div style="flex:1;min-width:0"><div style="font-weight:700;color:var(--green-dd);font-size:15px">Permaculture Design</div><div style="font-size:12.5px;color:var(--ink2);line-height:1.45;margin-top:2px">Contributeur officiel</div></div></div>
@@ -1014,7 +1041,7 @@
 
   <div class="acf-panel" data-screen-label="Fiche back-office">
     <div class="acf-h"><i data-lucide="database" style="width:16px;height:16px"></i>Fiche back-office : champs ACF de cet exemple</div>
-    <div class="acf-sub">Leçon de formation hébergée sur Vimeo, ouverte aux clients du PN et aux membres de L’Atelier.</div>
+    <div class="acf-sub">Fiche vitrine d’une leçon : extrait sur la fiche, leçon complète dans FluentCommunity pour les inscrits et L’Atelier.</div>
     <div class="acf-grid">
       <sc-for list="{{ acfM4 }}" as="g" hint-placeholder-count="4">
         <div class="acf-grp">
@@ -1247,16 +1274,16 @@ class Component extends DCLogic {
         V('extrait_vimeo_id', '', neuf),
         V('statut_publication', 'public'),
         V('acces_membre', 'gratuit'),
-        V('pn_requis', '', neuf),
+        V('formations', '', neuf),
+        V('lecon_fc', '', neuf),
         V('verrou_type', 'temporel_25'),
         V('lecture_partielle', 'sans objet (verrou temporel)', neuf),
         V('is_indexable', ha ? 'false : ARV lié, l’ARV est l’URL canonique' : 'true : pas d’ARV', calc),
       ]},
       { title: '2. Contenu et relations', rows: [
         V('has_article', ha ? 'ARV « Le mulch en permaculture : BRF, paillage et broyeur »' : ''),
-        V('has_formation', ''),
         V('has_transcription', 'true', calc),
-        V('transcription', 'Texte Whisper complet'),
+        V('transcription', 'Texte Whisper complet, public comme la vidéo'),
         V('resume_court', 'Pourquoi couvrir le sol, quel paillage choisir, comment faire son BRF (150 mots au plus)'),
         V('chapitres', '6 chapitres : Introduction, Comprendre le rôle du mulch, BRF : fabrication et maturation…'),
         V('plantes_citees', 'Consoude, Ortie, Luzerne, Bourrache'),
@@ -1284,22 +1311,22 @@ class Component extends DCLogic {
       { title: '1. Sources et accès', rows: [
         V('video_source', 'vimeo'),
         V('youtube_id', ''),
-        V('vimeo_id', 'ID de la vidéo complète, privée, lecture limitée au domaine', neuf),
+        V('vimeo_id', 'ID de la vidéo complète, utilisé par la leçon FluentCommunity, jamais par la fiche', neuf),
         V('extrait_vimeo_id', 'ID de l’extrait de 2 min, monté à part', neuf),
         V('statut_publication', 'public'),
         V('acces_membre', 'pn'),
-        V('pn_requis', 'Concevoir sa forêt comestible', neuf),
+        V('formations', 'Concevoir sa forêt comestible (espace FluentCommunity)', neuf),
+        V('lecon_fc', 'Leçon 3 de cet espace : sert au bouton « Continuer la leçon »', neuf),
         V('verrou_type', 'categoriel'),
         V('lecture_partielle', 'extrait', neuf),
         V('is_indexable', 'true : pas d’ARV', calc),
       ]},
       { title: '2. Contenu et relations', rows: [
         V('has_article', ''),
-        V('has_formation', 'Concevoir sa forêt comestible (leçon 3 sur 12)'),
         V('has_transcription', 'true', calc),
-        V('transcription', 'Texte Whisper complet (servi seulement à qui a accès)'),
+        V('transcription', 'Texte Whisper complet, absent de la page pour qui n’a pas accès'),
         V('resume_court', 'Lire son terrain, puis répartir les strates de la canopée au couvre-sol (150 mots au plus)'),
-        V('chapitres', ''),
+        V('chapitres', '4 titres, publics'),
         V('videos_similaires', 'Leçon 2 · Lire son terrain, Leçon 4 · Les guildes'),
         V('ressources_complementaires', 'Fiche de synthèse (PDF), grille d’observation'),
       ]},
@@ -1316,7 +1343,7 @@ class Component extends DCLogic {
       { title: '4. RAG', rows: [
         V('chunks_ready', 'true'),
         V('version_rag', '2026-10-05'),
-        V('metadata_json', 'Export pour le pipeline n8n, avec acces_membre et pn_requis'),
+        V('metadata_json', 'Export pour le pipeline n8n, avec acces_membre et formations'),
       ]},
     ];
 
