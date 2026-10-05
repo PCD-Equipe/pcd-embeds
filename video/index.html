@@ -957,7 +957,7 @@
           </div>
           <div class="pedago-note" style="margin-bottom:18px;max-width:none">
             <div class="pn-head">🔒 Une seule vidéo complète, regardée à un seul endroit</div>
-            <p>La fiche ne charge que l’extrait (<code>extrait_vimeo_id</code>, monté à part) : l’identifiant de la vidéo complète n’apparaît jamais dans la page. La leçon complète se regarde dans FluentCommunity, qui enregistre la progression. Le bouton change selon l’accès : membre de L’Atelier ou inscrit à une formation de <code>formations</code> → « Continuer la leçon » (lien construit avec <code>lecon_fc</code>) ; sinon → acheter la formation ou rejoindre L’Atelier.</p>
+            <p>La fiche ne charge que l’extrait (<code>extrait_vimeo_id</code>, monté à part) : l’identifiant de la vidéo complète n’apparaît jamais dans la page. La leçon complète se regarde dans FluentCommunity, qui enregistre la progression. Le bouton change selon l’accès : membre de L’Atelier ou inscrit à une formation de <code>formations</code> → « Continuer la leçon » (lien calculé par FluentCommunity à partir de <code>lecon_fc</code> : <code>/communaute/course/{cours}/lessons/{leçon}/view</code>) ; sinon → acheter la formation ou rejoindre L’Atelier.</p>
           </div>
 
           <!-- bloc éditorial enrichi (remplace l'encart article) -->
@@ -1312,11 +1312,11 @@ class Component extends DCLogic {
         V('video_source', 'vimeo'),
         V('youtube_id', ''),
         V('vimeo_id', 'ID de la vidéo complète, utilisé par la leçon FluentCommunity, jamais par la fiche', neuf),
-        V('extrait_vimeo_id', 'ID de l’extrait de 2 min, monté à part', neuf),
+        V('extrait_vimeo_id', 'ID de l’extrait monté à part : 25 % de la durée, entre 30 s et 2 min (ici 2 min sur 24)', neuf),
         V('statut_publication', 'public'),
         V('acces_membre', 'pn'),
-        V('formations', 'Concevoir sa forêt comestible (espace FluentCommunity)', neuf),
-        V('lecon_fc', 'Leçon 3 de cet espace : sert au bouton « Continuer la leçon »', neuf),
+        V('formations', 'Concevoir sa forêt comestible (ID de l’espace FluentCommunity)', neuf),
+        V('lecon_fc', 'ID de la leçon 3. Lien calculé : /communaute/course/{slug du cours}/lessons/{slug de la leçon}/view', neuf),
         V('verrou_type', 'categoriel'),
         V('lecture_partielle', 'extrait', neuf),
         V('is_indexable', 'true : pas d’ARV', calc),
