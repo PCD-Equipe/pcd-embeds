@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>TerraCheck</title>
+<style>/* TerraCheck — Design tokens
+   Based on Figma SPCD charte + DESIGN-SYSTEM.md ("Digital Arboretum")
+   - Forest green primary (#23442A from Figma)
+   - Cream / ivory surfaces
+   - Terracotta accent
+   - Recoleta (display serif) + Satoshi (body) via Fontshare
+*/
+
+@import url('https://api.fontshare.com/v2/css?f[]=recoleta@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap');
+
+:root {
+  /* === Core palette (from Figma METADATA + SPCD) === */
+  --tc-forest-900: #0F2414;   /* rgb(15,36,20) — deepest ink */
+  --tc-forest-800: #23442A;   /* rgb(35,68,42) — primary brand */
+  --tc-forest-700: #2F663B;   /* rgb(47,102,59) */
+  --tc-forest-500: #438E52;   /* rgb(67,142,82) — emerald accent */
+  --tc-forest-300: #A0D5AA;   /* rgb(160,213,170) */
+  --tc-forest-200: #CAE8CF;   /* rgb(202,232,207) */
+  --tc-forest-100: #E4F4E6;   /* rgb(228,244,230) */
+  --tc-forest-50:  #F3FAF4;   /* rgb(243,250,244) — palest */
+
+  /* Cream / ivory surfaces */
+  --tc-cream:      #FBFAF9;   /* rgb(251,250,249) */
+  --tc-cream-2:    #F6F6F0;   /* rgb(246,246,240) */
+
+  /* Accent: warm ocre/terracotta (from DS + Figma terracotta) */
+  --tc-ocre-500:   #9C8D56;   /* rgb(156,141,86) — ocre */
+  --tc-ocre-200:   #D6D3B2;
+  --tc-terra-500:  #E07400;   /* rgb(224,116,0) */
+  --tc-terra-600:  #B85A00;
+  --tc-terra-100:  #FED3C7;   /* MD3 secondary-container */
+
+  /* Alert / warning */
+  --tc-alert-700:  #5F1104;   /* deep alert */
+  --tc-alert-500:  #FF523B;   /* rgb(255,82,59) */
+
+  /* Yellow (badge / highlight) */
+  --tc-yellow-400: #FFDE67;   /* rgb(255,222,103) */
+
+  /* Neutrals */
+  --tc-ink:        #1B1C1A;
+  --tc-ink-70:     #424843;
+  --tc-ink-50:     rgba(27,28,26,0.5);
+  --tc-ink-25:     rgba(27,28,26,0.22);
+  --tc-ink-10:     rgba(27,28,26,0.10);
+  --tc-line:       rgba(27,28,26,0.08);
+
+  /* Soil-profile colours (for the 5 palettes) */
+  --tc-soil-argileux: #8B5A3C;   /* clay brown-red */
+  --tc-soil-sableux:  #D4B896;   /* sand beige */
+  --tc-soil-limoneux: #A68961;   /* silt warm brown */
+  --tc-soil-humifere: #3E2817;   /* humus near-black brown */
+  --tc-soil-calcaire: #D9D2B8;   /* chalk pale */
+
+  /* === Themeable accent (Tweaks) === */
+  --tc-accent:        var(--tc-forest-800);
+  --tc-accent-light:  var(--tc-forest-100);
+  --tc-accent-on:     #ffffff;
+
+  /* === Typography === */
+  --tc-font-display: 'Recoleta', 'Cormorant Garamond', Georgia, serif;
+  --tc-font-body:    'Satoshi', -apple-system, 'Helvetica Neue', sans-serif;
+  --tc-font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* Type scale */
+  --tc-text-xs:   12px;
+  --tc-text-sm:   13px;
+  --tc-text-base: 15px;
+  --tc-text-md:   17px;
+  --tc-text-lg:   20px;
+  --tc-text-xl:   24px;
+  --tc-text-2xl:  32px;
+  --tc-text-3xl:  40px;
+  --tc-text-4xl:  56px;
+
+  /* === Radii === */
+  --tc-r-xs: 4px;
+  --tc-r-sm: 8px;
+  --tc-r-md: 12px;
+  --tc-r-lg: 20px;
+  --tc-r-xl: 28px;
+  --tc-r-pill: 999px;
+
+  /* === Elevation (tonal, not shadows first) === */
+  --tc-shadow-sm: 0 1px 2px rgba(15,36,20,0.04), 0 2px 8px rgba(15,36,20,0.03);
+  --tc-shadow-md: 0 4px 16px rgba(15,36,20,0.06), 0 1px 3px rgba(15,36,20,0.04);
+  --tc-shadow-lg: 0 20px 40px rgba(15,36,20,0.10), 0 4px 12px rgba(15,36,20,0.05);
+}
+
+/* === Base reset === */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--tc-font-body);
+  font-size: var(--tc-text-base);
+  color: var(--tc-ink);
+  background: var(--tc-cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--tc-font-display);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--tc-forest-900);
+  margin: 0;
+}
+
+button { font-family: inherit; cursor: pointer; border: 0; background: none; padding: 0; color: inherit; }
+input, textarea, select { font-family: inherit; font-size: inherit; color: inherit; }
+
+/* === Reusable atoms === */
+
+.tc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--tc-r-md);
+  font-weight: 500;
+  font-size: var(--tc-text-base);
+  transition: transform 120ms ease, background 180ms ease, box-shadow 180ms ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.tc-btn:active { transform: translateY(1px); }
+
+.tc-btn--primary {
+  background: var(--tc-accent);
+  color: var(--tc-accent-on);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), var(--tc-shadow-sm);
+}
+.tc-btn--primary:hover { background: var(--tc-forest-900); }
+
+.tc-btn--ghost {
+  background: transparent;
+  color: var(--tc-forest-800);
+  padding: 10px 14px;
+}
+.tc-btn--ghost:hover { background: var(--tc-forest-100); }
+
+.tc-btn--outline {
+  background: var(--tc-cream);
+  color: var(--tc-forest-800);
+  box-shadow: inset 0 0 0 1px var(--tc-ink-10);
+}
+.tc-btn--outline:hover { box-shadow: inset 0 0 0 1px var(--tc-forest-800); }
+
+.tc-btn--sm { padding: 8px 14px; font-size: var(--tc-text-sm); border-radius: var(--tc-r-sm); }
+.tc-btn--lg { padding: 16px 28px; font-size: var(--tc-text-md); border-radius: var(--tc-r-lg); }
+
+/* Chip */
+.tc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--tc-r-pill);
+  background: var(--tc-forest-100);
+  color: var(--tc-forest-800);
+  font-size: var(--tc-text-sm);
+  font-weight: 500;
+  line-height: 1;
+  transition: background 150ms ease;
+}
+.tc-chip--ocre { background: var(--tc-terra-100); color: var(--tc-alert-700); }
+.tc-chip--yellow { background: var(--tc-yellow-400); color: var(--tc-forest-900); }
+.tc-chip--ghost { background: transparent; color: var(--tc-ink-70); box-shadow: inset 0 0 0 1px var(--tc-ink-10); }
+.tc-chip button, button.tc-chip { cursor: pointer; }
+.tc-chip[data-active="true"] { background: var(--tc-forest-800); color: var(--tc-cream); }
+
+/* Card */
+.tc-card {
+  background: var(--tc-cream);
+  border-radius: var(--tc-r-lg);
+  padding: 24px;
+}
+.tc-card--raised {
+  background: #fff;
+  box-shadow: var(--tc-shadow-md);
+}
+.tc-card--forest {
+  background: var(--tc-forest-800);
+  color: var(--tc-cream);
+}
+.tc-card--pale { background: var(--tc-forest-50); }
+
+/* Soft-well input */
+.tc-field {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--tc-forest-50);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--tc-r-sm) var(--tc-r-sm) 0 0;
+  font-size: var(--tc-text-base);
+  transition: border-color 180ms ease, background 180ms ease;
+}
+.tc-field:focus { outline: none; border-bottom-color: var(--tc-forest-800); background: var(--tc-cream); }
+.tc-field::placeholder { color: var(--tc-ink-50); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--tc-ink-10); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--tc-ink-25); }
+
+/* Screen wrapper */
+.tc-screen { display: flex; flex-direction: column; min-height: 100%; }
+
+/* Type utilities */
+.tc-display { font-family: var(--tc-font-display); font-weight: 500; letter-spacing: -0.02em; }
+.tc-mono-num { font-variant-numeric: tabular-nums; }
+.tc-uppercase-s { text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--tc-text-xs); font-weight: 500; }
+
+/* Small label pattern from SPCD (over cards) */
+.tc-eyebrow {
+  font-family: var(--tc-font-body);
+  font-size: var(--tc-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--tc-ink-70);
+  font-weight: 500;
+}
+
+/* Focus */
+:focus-visible { outline: 2px solid var(--tc-forest-500); outline-offset: 2px; border-radius: var(--tc-r-xs); }
+
+/* Anim helpers */
+@keyframes tc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tc-anim-in { animation: tc-fade-up 300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+html, body, #root { height: 100%; } body { overflow-x: hidden; }</style></head><body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script>// Data seed — soil profiles and plants (subset of the 363-plant base)
+// Keep compact; we expose a representative slice with good coverage of tags.
+
+window.SOIL_PROFILES = [
+  {
+    id: 'argileux',
+    name: 'Argileux',
+    tagline: 'Le Garde-Manger',
+    color: 'var(--tc-soil-argileux)',
+    hex: '#8B5A3C',
+    visual: 'Terre collante, traces blanches ou bleu-vert',
+    test: 'On peut facilement former un cerceau avec un boudin de terre',
+    character: "Retient très bien l'humidité et les minéraux mais peut devenir asphyxiant s'il est trop tassé.",
+    icon: 'donut',
+  },
+  {
+    id: 'sableux',
+    name: 'Sableux',
+    tagline: 'Le Drainant',
+    color: 'var(--tc-soil-sableux)',
+    hex: '#D4B896',
+    visual: 'Texture granuleuse, ne colore pas la peau',
+    test: "Le boudin s'effrite immédiatement entre les mains",
+    character: "Se réchauffe vite au printemps mais retient peu l'eau et les nutriments.",
+    icon: 'grain',
+  },
+  {
+    id: 'limoneux',
+    name: 'Limoneux',
+    tagline: 'Le Fragile',
+    color: 'var(--tc-soil-limoneux)',
+    hex: '#A68961',
+    visual: 'Terre douce qui colore légèrement la peau',
+    test: 'On peut former un boudin, mais il casse dès qu\'on essaie de faire un cercle',
+    character: "Riche, mais sujet à la « croûte de battance ».",
+    icon: 'wave',
+  },
+  {
+    id: 'humifere',
+    name: 'Humifère',
+    tagline: "L'Éponge",
+    color: 'var(--tc-soil-humifere)',
+    hex: '#3E2817',
+    visual: 'Couleur très sombre, presque noire',
+    test: "Structure grumeleuse qui s'émiette comme un gâteau",
+    character: "Très fertile, excellente rétention d'eau et odeur de sous-bois.",
+    icon: 'sponge',
+  },
+  {
+    id: 'calcaire',
+    name: 'Calcaire',
+    tagline: 'Le Méditerranéen',
+    color: 'var(--tc-soil-calcaire)',
+    hex: '#D9D2B8',
+    visual: 'Souvent clair ou pierreux',
+    test: 'Bouillonne fortement au contact du vinaigre blanc',
+    character: 'Sol basique (pH > 7), idéal pour thym ou lavande.',
+    icon: 'stone',
+  },
+];
+
+// Curated bio-indicator list — subset covering tags used in the doc
+// Each plant: name, family, tags[], signal, color
+window.PLANTS = [
+  { id: 'ortie', nom: 'Ortie dioïque', sci: 'Urtica dioica', famille: 'Urticacées', tags: ['excès N', 'MO animale'], signal: 'Excès d\'azote, terre riche', color: 'jaune', emoji: '🌿' },
+  { id: 'plantain', nom: 'Plantain majeur', sci: 'Plantago major', famille: 'Plantaginacées', tags: ['compactage', 'piétinement'], signal: 'Sol compacté, piétiné', color: 'rouge', emoji: '🌱' },
+  { id: 'chiendent', nom: 'Chiendent', sci: 'Elymus repens', famille: 'Poacées', tags: ['compactage'], signal: 'Sol lourd et tassé', color: 'rouge', emoji: '🌾' },
+  { id: 'liseron', nom: 'Liseron des champs', sci: 'Convolvulus arvensis', famille: 'Convolvulacées', tags: ['compactage', 'alcalinité'], signal: 'Compactage + calcaire actif', color: 'jaune', emoji: '🌸' },
+  { id: 'pret', nom: 'Prêle des champs', sci: 'Equisetum arvense', famille: 'Équisétacées', tags: ['hydromorphisme', 'acidité'], signal: 'Sol humide et acide', color: 'rouge', emoji: '🌿' },
+  { id: 'jonc', nom: 'Jonc diffus', sci: 'Juncus effusus', famille: 'Joncacées', tags: ['hydromorphisme', 'anaérobiose'], signal: 'Eau stagnante', color: 'rouge', emoji: '🌾' },
+  { id: 'carex', nom: 'Carex', sci: 'Carex sp.', famille: 'Cypéracées', tags: ['hydromorphisme'], signal: 'Excès d\'eau', color: 'rouge', emoji: '🌾' },
+  { id: 'spiree', nom: 'Spirée des prés', sci: 'Filipendula ulmaria', famille: 'Rosacées', tags: ['hydromorphisme'], signal: 'Sol humide riche', color: 'jaune', emoji: '🌼' },
+  { id: 'bruyere', nom: 'Bruyère commune', sci: 'Calluna vulgaris', famille: 'Éricacées', tags: ['acidité', 'carence N'], signal: 'Sol acide, pauvre', color: 'jaune', emoji: '🌺' },
+  { id: 'fougere', nom: 'Fougère aigle', sci: 'Pteridium aquilinum', famille: 'Dennstaedtiacées', tags: ['acidité'], signal: 'Sol franchement acide', color: 'jaune', emoji: '🌿' },
+  { id: 'oseille', nom: 'Petite oseille', sci: 'Rumex acetosella', famille: 'Polygonacées', tags: ['acidité'], signal: 'Sol acide et pauvre', color: 'jaune', emoji: '🌱' },
+  { id: 'genet', nom: 'Genêt à balai', sci: 'Cytisus scoparius', famille: 'Fabacées', tags: ['acidité'], signal: 'Sol siliceux, acide', color: 'vert', emoji: '🌼' },
+  { id: 'sainfoin', nom: 'Sainfoin', sci: 'Onobrychis viciifolia', famille: 'Fabacées', tags: ['alcalinité'], signal: 'Sol calcaire équilibré', color: 'vert', emoji: '🌸' },
+  { id: 'thym', nom: 'Thym serpolet', sci: 'Thymus serpyllum', famille: 'Lamiacées', tags: ['alcalinité', 'sécheresse'], signal: 'Sol calcaire, sec', color: 'vert', emoji: '🌿' },
+  { id: 'buis', nom: 'Buis', sci: 'Buxus sempervirens', famille: 'Buxacées', tags: ['alcalinité'], signal: 'Calcaire', color: 'vert', emoji: '🌳' },
+  { id: 'hellebore', nom: 'Hellébore fétide', sci: 'Helleborus foetidus', famille: 'Renonculacées', tags: ['alcalinité'], signal: 'Sol calcaire forestier', color: 'vert', emoji: '🌿' },
+  { id: 'ronce', nom: 'Ronce commune', sci: 'Rubus fruticosus', famille: 'Rosacées', tags: ['équilibre', 'MO végétale'], signal: 'Sol structuré et vivant', color: 'vert', emoji: '🌿' },
+  { id: 'fetuque', nom: 'Fétuque rouge', sci: 'Festuca rubra', famille: 'Poacées', tags: ['carence N', 'érosion'], signal: 'Sol siliceux pauvre', color: 'jaune', emoji: '🌾' },
+  { id: 'bouleau', nom: 'Bouleau verruqueux', sci: 'Betula pendula', famille: 'Bétulacées', tags: ['acidité'], signal: 'Sol acide', color: 'jaune', emoji: '🌳' },
+  { id: 'saule', nom: 'Saule blanc', sci: 'Salix alba', famille: 'Salicacées', tags: ['hydromorphisme'], signal: 'Humidité permanente', color: 'jaune', emoji: '🌳' },
+  { id: 'frene', nom: 'Frêne commun', sci: 'Fraxinus excelsior', famille: 'Oléacées', tags: ['hydromorphisme', 'alcalinité'], signal: 'Sol frais profond', color: 'vert', emoji: '🌳' },
+  { id: 'chataignier', nom: 'Châtaignier', sci: 'Castanea sativa', famille: 'Fagacées', tags: ['acidité'], signal: 'Sol acide profond', color: 'jaune', emoji: '🌳' },
+  { id: 'chene-vert', nom: 'Chêne vert', sci: 'Quercus ilex', famille: 'Fagacées', tags: ['alcalinité', 'sécheresse'], signal: 'Calcaire méditerranéen', color: 'vert', emoji: '🌳' },
+  { id: 'moutarde', nom: 'Moutarde des champs', sci: 'Sinapis arvensis', famille: 'Brassicacées', tags: ['excès N'], signal: 'Azote disponible', color: 'jaune', emoji: '🌼' },
+  { id: 'chenopode', nom: 'Chénopode blanc', sci: 'Chenopodium album', famille: 'Amaranthacées', tags: ['excès N', 'MO animale'], signal: 'Nitrates, fumure récente', color: 'jaune', emoji: '🌱' },
+  { id: 'mouron', nom: 'Mouron des oiseaux', sci: 'Stellaria media', famille: 'Caryophyllacées', tags: ['équilibre', 'excès N'], signal: 'Sol frais riche en humus', color: 'vert', emoji: '🌸' },
+  { id: 'trefle', nom: 'Trèfle blanc', sci: 'Trifolium repens', famille: 'Fabacées', tags: ['équilibre'], signal: 'Sol équilibré', color: 'vert', emoji: '🍀' },
+  { id: 'pissenlit', nom: 'Pissenlit', sci: 'Taraxacum officinale', famille: 'Astéracées', tags: ['équilibre', 'MO animale'], signal: 'Prairie vivante', color: 'vert', emoji: '🌼' },
+];
+
+// Tag display meta
+window.TAG_META = {
+  'compactage':       { label: 'Compactage',       color: '#B85A00', bg: '#FED3C7' },
+  'hydromorphisme':   { label: 'Excès d\'eau',     color: '#1B4965', bg: '#CFE0E8' },
+  'MO végétale':      { label: 'Mat. organique',   color: '#2F663B', bg: '#E4F4E6' },
+  'MO animale':       { label: 'Fumure récente',   color: '#795950', bg: '#FBE5DC' },
+  'acidité':          { label: 'Acidité',          color: '#5F1104', bg: '#FBD7D0' },
+  'alcalinité':       { label: 'Calcaire',         color: '#9C8D56', bg: '#F3EECC' },
+  'anaérobiose':      { label: 'Asphyxie',         color: '#5F1104', bg: '#FBD7D0' },
+  'excès N':          { label: 'Excès d\'azote',   color: '#795950', bg: '#FBE5DC' },
+  'carence N':        { label: 'Manque azote',     color: '#B85A00', bg: '#FDEAD6' },
+  'carence P':        { label: 'Manque phosphore', color: '#B85A00', bg: '#FDEAD6' },
+  'carence K':        { label: 'Manque potasse',   color: '#B85A00', bg: '#FDEAD6' },
+  'érosion':          { label: 'Érosion',          color: '#B85A00', bg: '#FDEAD6' },
+  'sécheresse':       { label: 'Sécheresse',       color: '#9C8D56', bg: '#F3EECC' },
+  'instabilité':      { label: 'Instabilité',      color: '#795950', bg: '#FBE5DC' },
+  'inondation':       { label: 'Inondation',       color: '#1B4965', bg: '#CFE0E8' },
+  'piétinement':      { label: 'Piétinement',      color: '#795950', bg: '#FBE5DC' },
+  'équilibre':        { label: 'Équilibre',        color: '#2F663B', bg: '#E4F4E6' },
+};
+
+// Missions template
+window.MISSIONS = [
+  { id: 'm0', idx: 0, name: 'Zone & Prélèvement',    sub: 'Identifier et prélever',         icon: 'pin',     est: '5 min' },
+  { id: 'm1', idx: 1, name: 'Bio-indication',         sub: 'Lire les plantes sauvages',      icon: 'leaf',    est: '10 min' },
+  { id: 'm2', idx: 2, name: 'Observation sensorielle',sub: 'Couleur, odeur, vie',            icon: 'eye',     est: '5 min' },
+  { id: 'm3', idx: 3, name: 'Texture — Boudin',       sub: 'Test tactile guidé',             icon: 'coil',    est: '3 min' },
+  { id: 'm4', idx: 4, name: 'Texture — Bocal',        sub: 'Sédimentation + triangle',       icon: 'jar',     est: '24 h' },
+  { id: 'm5', idx: 5, name: 'Chimie (pH)',            sub: 'Vinaigre, bicarbonate, chou',    icon: 'flask',   est: '10 min' },
+  { id: 'm6', idx: 6, name: 'Perméabilité',           sub: 'Chronomètre du trou d\'eau',     icon: 'drop',    est: '30 min' },
+  { id: 'm7', idx: 7, name: 'Vie du sol',             sub: 'Test du slip (J+60)',            icon: 'worm',    est: '60 j' },
+];
+
+window.BADGES = [
+  { id: 'observer',   name: 'L\'Observateur', need: ['m1', 'm2'], emoji: '👁' },
+  { id: 'alchimist',  name: 'L\'Alchimiste',  need: ['m5'],       emoji: '⚗' },
+  { id: 'master',     name: 'Maître de la Terre', need: ['m0','m1','m2','m3','m4','m5','m6','m7'], emoji: '🏆' },
+];
+</script>
+<script type="text/babel">
+// Custom SVG icons — minimalist line style, 24px viewBox
+// Usage: <Icon name="leaf" size={20} />
+
+const ICONS = {
+  arrow_left: 'M15 18l-6-6 6-6',
+  arrow_right: 'M9 6l6 6-6 6',
+  plus: 'M12 5v14M5 12h14',
+  check: 'M4 12l5 5L20 6',
+  search: 'M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14zM17 17l4 4',
+  close: 'M6 6l12 12M18 6l-12 12',
+  leaf: 'M20 4c-8 0-14 4-14 12 0 2 0 4 2 4 8 0 12-6 12-16zM6 20c3-6 7-10 12-12',
+  eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
+  pin: 'M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zM12 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z',
+  flask: 'M9 2h6M10 2v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L14 8V2',
+  drop: 'M12 2s7 8 7 13a7 7 0 1 1-14 0c0-5 7-13 7-13z',
+  coil: 'M4 12c0-3 3-5 8-5s8 2 8 5-3 5-8 5-8-2-8-5z M4 12v4c0 3 3 5 8 5s8-2 8-5v-4',
+  jar: 'M8 2h8v3H8zM6 5h12v15a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z M6 11h12 M6 16h12',
+  worm: 'M3 16c3 0 3-3 6-3s3 3 6 3 3-3 6-3 M3 12c3 0 3-3 6-3s3 3 6 3 3-3 6-3',
+  clock: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2',
+  home: 'M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+  chart: 'M4 20V10 M10 20V4 M16 20v-8 M22 20H2',
+  trophy: 'M7 4h10v4a5 5 0 0 1-10 0V4z M5 4H3v2a4 4 0 0 0 4 4 M19 4h2v2a4 4 0 0 1-4 4 M9 18h6 M12 14v4',
+  sparkle: 'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',
+  more: 'M5 12h.01 M12 12h.01 M19 12h.01',
+  settings: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19 12l2-1-1-3-2 1-1-2 1-2-3-1-1 2-2-1V3h-4v2l-2 1-1-2-3 1 1 2-1 2-2-1-1 3 2 1-2 1 1 3 2-1 1 2-1 2 3 1 1-2 2 1v2h4v-2l2-1 1 2 3-1-1-2 1-2 2 1 1-3z',
+  beaker: 'M6 2h12 M8 2v7L4 18a3 3 0 0 0 3 4h10a3 3 0 0 0 3-4L16 9V2 M9 13c3 2 6 0 9 2',
+  camera: 'M4 8a2 2 0 0 1 2-2h2l2-2h4l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  info: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 11v6 M12 7v.01',
+  book: 'M4 4a2 2 0 0 1 2-2h13v18H6a2 2 0 0 0-2 2z M4 4v18 M9 8h6 M9 12h6',
+};
+
+function Icon({ name, size = 20, color = 'currentColor', strokeWidth = 1.6, style = {} }) {
+  const d = ICONS[name];
+  if (!d) return null;
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 24 24"
+      fill="none" stroke={color} strokeWidth={strokeWidth}
+      strokeLinecap="round" strokeLinejoin="round"
+      style={{ display: 'inline-block', flexShrink: 0, ...style }}
+      aria-hidden="true"
+    >
+      {d.split(' M').map((p, i) => (
+        <path key={i} d={i === 0 ? p : 'M' + p} />
+      ))}
+    </svg>
+  );
+}
+
+window.Icon = Icon;
+
+// Shared UI components for TerraCheck prototype
+// Depends on: window.Icon
+
+const { useState, useEffect, useMemo, useRef } = React;
+
+// ---------- Mobile frame ----------
+function PhoneFrame({ children }) {
+  return (
+    <div style={{
+      minHeight: '100%',
+      background: 'linear-gradient(180deg, #EDEBE3 0%, #E5E1D3 100%)',
+      padding: '28px 0 48px',
+      display: 'flex', justifyContent: 'center',
+    }}>
+      <div style={{
+        width: 393,
+        minHeight: 852,
+        background: 'var(--tc-cream)',
+        borderRadius: 44,
+        boxShadow: '0 40px 80px rgba(15,36,20,0.18), 0 8px 20px rgba(15,36,20,0.08)',
+        overflow: 'hidden',
+        position: 'relative',
+        border: '10px solid #14200F',
+      }}>
+        {/* notch */}
+        <div style={{
+          position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
+          width: 110, height: 28, background: '#14200F', borderRadius: 20, zIndex: 100,
+        }} />
+        <div style={{ height: 48 }} />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ---------- Top header ----------
+function AppHeader({ title, onBack, subtitle, right, theme = 'cream' }) {
+  const bg = theme === 'forest' ? 'var(--tc-forest-800)' : 'transparent';
+  const fg = theme === 'forest' ? 'var(--tc-cream)' : 'var(--tc-forest-900)';
+  return (
+    <div style={{
+      padding: '12px 16px 16px', background: bg, color: fg,
+      display: 'flex', alignItems: 'center', gap: 12,
+      position: 'sticky', top: 0, zIndex: 20,
+      backdropFilter: theme === 'cream' ? 'blur(8px)' : 'none',
+      backgroundColor: theme === 'cream' ? 'rgba(251,250,249,0.85)' : bg,
+    }}>
+      {onBack && (
+        <button className="tc-btn tc-btn--ghost" onClick={onBack}
+          style={{ padding: 8, marginLeft: -6, color: fg }}>
+          <Icon name="arrow_left" size={22} />
+        </button>
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {subtitle && <div className="tc-eyebrow" style={{ color: theme === 'forest' ? 'rgba(255,255,255,0.6)' : 'var(--tc-ink-70)' }}>{subtitle}</div>}
+        <div style={{ fontFamily: 'var(--tc-font-display)', fontWeight: 500, fontSize: 20, letterSpacing: '-0.01em' }}>{title}</div>
+      </div>
+      {right}
+    </div>
+  );
+}
+
+// ---------- Tag chip (plants) ----------
+function TagChip({ tag, size = 'md' }) {
+  const meta = window.TAG_META[tag] || { label: tag, color: '#555', bg: '#eee' };
+  const pad = size === 'sm' ? '3px 8px' : '5px 10px';
+  const fs = size === 'sm' ? 11 : 12;
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', padding: pad,
+      background: meta.bg, color: meta.color,
+      borderRadius: 999, fontSize: fs, fontWeight: 500, lineHeight: 1,
+    }}>{meta.label}</span>
+  );
+}
+
+// ---------- Progress bar (organic) ----------
+function Progress({ value, max = 100, height = 8, color = 'var(--tc-forest-500)' }) {
+  const pct = Math.max(0, Math.min(100, (value / max) * 100));
+  return (
+    <div style={{
+      position: 'relative', width: '100%', height, borderRadius: 999,
+      background: 'var(--tc-forest-100)', overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, width: `${pct}%`,
+        background: `linear-gradient(90deg, var(--tc-forest-700), ${color})`,
+        borderRadius: 999, transition: 'width 600ms cubic-bezier(0.22,1,0.36,1)',
+      }} />
+    </div>
+  );
+}
+
+// ---------- Bottom nav ----------
+function BottomNav({ current, onNavigate }) {
+  const items = [
+    { id: 'home',   label: 'Zones',    icon: 'home' },
+    { id: 'plants', label: 'Plantes',  icon: 'leaf' },
+    { id: 'reports',label: 'Rapports', icon: 'chart' },
+    { id: 'profile',label: 'Profil',   icon: 'trophy' },
+  ];
+  return (
+    <div style={{
+      position: 'sticky', bottom: 0, left: 0, right: 0,
+      background: 'rgba(251,250,249,0.92)', backdropFilter: 'blur(12px)',
+      borderTop: '1px solid var(--tc-line)',
+      display: 'flex', padding: '8px 4px 14px', zIndex: 30,
+    }}>
+      {items.map(it => {
+        const active = current === it.id;
+        return (
+          <button key={it.id} onClick={() => onNavigate(it.id)}
+            style={{
+              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+              padding: '6px 4px', color: active ? 'var(--tc-forest-800)' : 'var(--tc-ink-70)',
+              fontSize: 11, fontWeight: 500,
+            }}>
+            <div style={{
+              width: 44, height: 28, borderRadius: 14,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: active ? 'var(--tc-forest-100)' : 'transparent',
+              transition: 'background 180ms',
+            }}>
+              <Icon name={it.icon} size={20} />
+            </div>
+            {it.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---------- Soil profile visual ----------
+function SoilGlyph({ profile, size = 64 }) {
+  const { id, hex } = profile;
+  const s = size;
+  if (id === 'argileux') {
+    return <svg width={s} height={s} viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill={hex} /><circle cx="32" cy="32" r="12" fill="var(--tc-cream)" /></svg>;
+  }
+  if (id === 'sableux') {
+    return <svg width={s} height={s} viewBox="0 0 64 64">
+      {Array.from({length: 40}).map((_,i) => {
+        const x = (i*37)%56 + 4, y = (i*29)%56 + 4;
+        return <circle key={i} cx={x} cy={y} r="1.8" fill={hex} />;
+      })}
+    </svg>;
+  }
+  if (id === 'limoneux') {
+    return <svg width={s} height={s} viewBox="0 0 64 64">
+      <path d="M4 28c8-6 16 6 24 0s16 6 24 0M4 40c8-6 16 6 24 0s16 6 24 0" fill="none" stroke={hex} strokeWidth="3" strokeLinecap="round"/>
+    </svg>;
+  }
+  if (id === 'humifere') {
+    return <svg width={s} height={s} viewBox="0 0 64 64">
+      <circle cx="22" cy="22" r="10" fill={hex}/>
+      <circle cx="42" cy="26" r="8" fill={hex} opacity="0.75"/>
+      <circle cx="30" cy="42" r="12" fill={hex} opacity="0.9"/>
+      <circle cx="46" cy="46" r="6" fill={hex} opacity="0.7"/>
+    </svg>;
+  }
+  return <svg width={s} height={s} viewBox="0 0 64 64">
+    <polygon points="32,8 54,24 48,52 16,52 10,24" fill={hex} stroke="var(--tc-forest-900)" strokeWidth="1.5" strokeOpacity="0.15"/>
+    <polygon points="32,18 44,28 40,44 24,44 20,28" fill="var(--tc-cream)" opacity="0.6"/>
+  </svg>;
+}
+
+// ---------- Empty state ----------
+function EmptyHint({ children }) {
+  return <div style={{
+    padding: 20, textAlign: 'center', color: 'var(--tc-ink-70)',
+    fontSize: 14, fontStyle: 'italic',
+  }}>{children}</div>;
+}
+
+Object.assign(window, { PhoneFrame, AppHeader, TagChip, Progress, BottomNav, SoilGlyph, EmptyHint });
+
+// Home & Zone screens
+const { useState: useStateH, useEffect: useEffectH } = React;
+
+function HomeScreen({ zones, onCreate, onOpenZone, onNavigate }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader
+        title="TerraCheck"
+        subtitle="← Retour aux outils"
+        right={<button className="tc-btn tc-btn--ghost" style={{ padding: 8 }}><Icon name="settings" size={20} /></button>}
+      />
+
+      {/* Hero greeting */}
+      <div style={{ padding: '12px 20px 8px' }}>
+        <div className="tc-eyebrow" style={{ marginBottom: 8 }}>Bonjour Camille</div>
+        <h1 style={{ fontSize: 32, lineHeight: 1.1 }}>Le langage du sol,<br/><em style={{ fontStyle: 'italic', color: 'var(--tc-forest-500)' }}>enfin traduit.</em></h1>
+      </div>
+
+      {/* Quick stats */}
+      <div style={{ padding: '16px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+        <StatCard value={zones.length} label="Zones" />
+        <StatCard value={zones.reduce((a,z)=>a+z.done, 0)} label="Tests menés" />
+        <StatCard value={zones.filter(z=>z.done>=6).length} label="Diagnostiqués" />
+      </div>
+
+      {/* My zones */}
+      <div style={{ padding: '20px 20px 8px', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <h2 style={{ fontSize: 22 }}>Mes zones</h2>
+        <span style={{ fontSize: 13, color: 'var(--tc-ink-70)' }}>{zones.length} parcelles</span>
+      </div>
+
+      <div style={{ padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {zones.map((z, i) => (
+          <ZoneCard key={z.id} zone={z} onClick={() => onOpenZone(z.id)} delay={i*60} />
+        ))}
+
+        {/* Create new */}
+        <button
+          onClick={onCreate}
+          className="tc-anim-in"
+          style={{
+            textAlign: 'left', padding: '18px 20px', borderRadius: 20,
+            background: 'var(--tc-cream)',
+            boxShadow: 'inset 0 0 0 1.5px var(--tc-ink-10)',
+            display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
+          }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: 14, background: 'var(--tc-forest-100)',
+            color: 'var(--tc-forest-800)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Icon name="plus" size={22} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, fontSize: 15, color: 'var(--tc-forest-900)' }}>Nouvelle zone</div>
+            <div style={{ fontSize: 13, color: 'var(--tc-ink-70)', marginTop: 2 }}>Photo, nom, historique de la parcelle</div>
+          </div>
+          <Icon name="arrow_right" size={18} color="var(--tc-ink-50)" />
+        </button>
+      </div>
+
+      {/* Encyclopédie teaser */}
+      <div style={{ padding: '28px 20px 20px' }}>
+        <button
+          onClick={() => onNavigate('plants')}
+          style={{
+            width: '100%', padding: 20, borderRadius: 24, textAlign: 'left', cursor: 'pointer',
+            background: 'linear-gradient(135deg, var(--tc-forest-800) 0%, var(--tc-forest-700) 100%)',
+            color: 'var(--tc-cream)', position: 'relative', overflow: 'hidden',
+          }}>
+          <div style={{ position: 'absolute', right: -20, top: -20, opacity: 0.2, transform: 'rotate(15deg)' }}>
+            <Icon name="leaf" size={160} strokeWidth={1.2} />
+          </div>
+          <div style={{ position: 'relative' }}>
+            <div className="tc-eyebrow" style={{ color: 'var(--tc-forest-300)' }}>Encyclopédie</div>
+            <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 26, fontWeight: 500, marginTop: 6, letterSpacing: '-0.01em' }}>
+              Les sauvages parlent
+            </div>
+            <div style={{ fontSize: 13, marginTop: 6, opacity: 0.8, maxWidth: 260 }}>
+              363 plantes bio-indicatrices. Lisez votre sol sans creuser.
+            </div>
+            <div style={{ marginTop: 14, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500 }}>
+              Explorer <Icon name="arrow_right" size={16} />
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <div style={{ flex: 1 }} />
+    </div>
+  );
+}
+
+function StatCard({ value, label }) {
+  return (
+    <div style={{
+      background: 'var(--tc-cream)',
+      borderRadius: 16, padding: '14px 12px',
+      boxShadow: 'inset 0 0 0 1px var(--tc-line)',
+    }}>
+      <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 28, fontWeight: 500, color: 'var(--tc-forest-900)', lineHeight: 1 }}>{value}</div>
+      <div style={{ fontSize: 11, color: 'var(--tc-ink-70)', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+    </div>
+  );
+}
+
+function ZoneCard({ zone, onClick, delay = 0 }) {
+  const pct = Math.round((zone.done / 8) * 100);
+  const soil = window.SOIL_PROFILES.find(s => s.id === zone.soilGuess);
+  return (
+    <button onClick={onClick}
+      className="tc-anim-in"
+      style={{
+        textAlign: 'left', padding: 0, borderRadius: 22, cursor: 'pointer',
+        background: '#fff', boxShadow: 'var(--tc-shadow-sm)', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column', animationDelay: `${delay}ms`,
+      }}>
+      <div style={{ display: 'flex', alignItems: 'stretch' }}>
+        {/* Thumbnail */}
+        <div style={{
+          width: 96, background: soil ? soil.hex : 'var(--tc-forest-700)',
+          position: 'relative', flexShrink: 0,
+          backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12), rgba(0,0,0,0.15))`,
+        }}>
+          <div style={{ position: 'absolute', left: 10, bottom: 10, color: '#fff', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
+            {zone.exposure || '—'}
+          </div>
+        </div>
+        <div style={{ padding: '16px 18px', flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 18, fontWeight: 500, color: 'var(--tc-forest-900)', lineHeight: 1.15 }}>{zone.name}</div>
+              <div style={{ fontSize: 12, color: 'var(--tc-ink-70)', marginTop: 3 }}>{zone.area} · créée {zone.created}</div>
+            </div>
+            {soil && (
+              <span style={{
+                fontSize: 10, padding: '4px 8px', borderRadius: 999,
+                background: 'var(--tc-forest-100)', color: 'var(--tc-forest-800)',
+                textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, whiteSpace: 'nowrap',
+              }}>{soil.name}</span>
+            )}
+          </div>
+          <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Progress value={zone.done} max={8} height={6} />
+            <span className="tc-mono-num" style={{ fontSize: 12, color: 'var(--tc-ink-70)', fontWeight: 500, whiteSpace: 'nowrap' }}>{zone.done}/8</span>
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+window.HomeScreen = HomeScreen;
+
+// Create Zone flow + 5 soil palettes (Match parfait)
+
+function CreateZoneScreen({ onBack, onCreate }) {
+  const [step, setStep] = React.useState(1);
+  const [name, setName] = React.useState('');
+  const [area, setArea] = React.useState('');
+  const [exposure, setExposure] = React.useState('');
+  const [history, setHistory] = React.useState('');
+  const [guess, setGuess] = React.useState(null);
+
+  const finish = () => {
+    onCreate({
+      id: 'z' + Date.now(),
+      name: name || 'Nouvelle zone',
+      area: area || '—',
+      exposure: exposure || 'Mi-ombre',
+      history, soilGuess: guess,
+      created: 'aujourd\'hui',
+      done: 0,
+    });
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader title={step === 1 ? 'Nouvelle zone' : 'Le Match Parfait'} onBack={onBack}
+        subtitle={`Étape ${step}/2`} />
+
+      {step === 1 && (
+        <div style={{ padding: '8px 20px 20px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div>
+            <label className="tc-eyebrow" style={{ display: 'block', marginBottom: 6 }}>Nom de la parcelle</label>
+            <input className="tc-field" placeholder="Ex. Le Carré des Aromates"
+              value={name} onChange={e => setName(e.target.value)} />
+            <div style={{ fontSize: 12, color: 'var(--tc-ink-70)', marginTop: 6, fontStyle: 'italic' }}>
+              Donnez un nom pour différencier vos types de terre.
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div>
+              <label className="tc-eyebrow" style={{ display: 'block', marginBottom: 6 }}>Surface</label>
+              <input className="tc-field" placeholder="~ 12 m²" value={area} onChange={e=>setArea(e.target.value)} />
+            </div>
+            <div>
+              <label className="tc-eyebrow" style={{ display: 'block', marginBottom: 6 }}>Exposition</label>
+              <select className="tc-field" value={exposure} onChange={e=>setExposure(e.target.value)}>
+                <option value="">Choisir</option>
+                <option>Plein soleil</option>
+                <option>Mi-ombre</option>
+                <option>Ombre</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Photo upload */}
+          <div>
+            <label className="tc-eyebrow" style={{ display: 'block', marginBottom: 6 }}>Photo de la zone</label>
+            <div style={{
+              border: '2px dashed var(--tc-forest-200)', borderRadius: 16, padding: '28px 20px',
+              textAlign: 'center', background: 'var(--tc-forest-50)',
+            }}>
+              <Icon name="camera" size={28} color="var(--tc-forest-700)" />
+              <div style={{ marginTop: 10, fontSize: 14, fontWeight: 500, color: 'var(--tc-forest-900)' }}>Ajouter une photo</div>
+              <div style={{ fontSize: 12, color: 'var(--tc-ink-70)', marginTop: 3 }}>Vue d'ensemble + détail texture</div>
+            </div>
+          </div>
+
+          <div>
+            <label className="tc-eyebrow" style={{ display: 'block', marginBottom: 6 }}>Historique de la parcelle</label>
+            <textarea className="tc-field" rows="3" placeholder="Usage passé, amendements, culture précédente…"
+              value={history} onChange={e=>setHistory(e.target.value)}
+              style={{ resize: 'vertical', minHeight: 84 }} />
+          </div>
+
+          <button className="tc-btn tc-btn--primary tc-btn--lg" onClick={()=>setStep(2)} style={{ marginTop: 8 }}>
+            Continuer <Icon name="arrow_right" size={18} />
+          </button>
+        </div>
+      )}
+
+      {step === 2 && (
+        <MatchParfait guess={guess} setGuess={setGuess} onBack={()=>setStep(1)} onFinish={finish} />
+      )}
+    </div>
+  );
+}
+
+function MatchParfait({ guess, setGuess, onBack, onFinish }) {
+  return (
+    <div style={{ padding: '8px 20px 24px' }}>
+      <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 24, lineHeight: 1.2, color: 'var(--tc-forest-900)' }}>
+        À quoi ressemble votre sol, <em style={{ color: 'var(--tc-forest-500)' }}>à l'œil nu</em> ?
+      </div>
+      <div style={{ fontSize: 13, color: 'var(--tc-ink-70)', marginTop: 8, marginBottom: 18 }}>
+        Choisissez le profil le plus proche. Nous le vérifierons ensemble avec les tests physiques.
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {window.SOIL_PROFILES.map(p => {
+          const active = guess === p.id;
+          return (
+            <button key={p.id} onClick={() => setGuess(p.id)}
+              style={{
+                textAlign: 'left', padding: 14, borderRadius: 18, cursor: 'pointer',
+                background: active ? 'var(--tc-forest-50)' : '#fff',
+                boxShadow: active
+                  ? 'inset 0 0 0 2px var(--tc-forest-800)'
+                  : 'inset 0 0 0 1px var(--tc-line)',
+                display: 'flex', alignItems: 'center', gap: 14, transition: 'all 180ms',
+              }}>
+              <div style={{
+                width: 58, height: 58, borderRadius: 16, flexShrink: 0,
+                background: p.hex, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <SoilGlyph profile={p} size={44} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <span style={{ fontFamily: 'var(--tc-font-display)', fontSize: 18, fontWeight: 500, color: 'var(--tc-forest-900)' }}>{p.name}</span>
+                  <span style={{ fontSize: 11, color: 'var(--tc-forest-700)', fontStyle: 'italic' }}>« {p.tagline} »</span>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--tc-ink-70)', marginTop: 3, lineHeight: 1.4 }}>{p.visual}</div>
+              </div>
+              {active && <div style={{
+                width: 26, height: 26, borderRadius: 999, background: 'var(--tc-forest-800)', color: '#fff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}><Icon name="check" size={16} /></div>}
+            </button>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={onFinish}
+        disabled={!guess}
+        className="tc-btn tc-btn--primary tc-btn--lg"
+        style={{ width: '100%', marginTop: 24, opacity: guess ? 1 : 0.4 }}>
+        Créer la zone <Icon name="arrow_right" size={18} />
+      </button>
+      <button onClick={onFinish} className="tc-btn tc-btn--ghost" style={{ width: '100%', marginTop: 6 }}>
+        Je ne sais pas — passer directement aux tests
+      </button>
+    </div>
+  );
+}
+
+window.CreateZoneScreen = CreateZoneScreen;
+
+// Zone detail — mission map with progress
+function ZoneScreen({ zone, onBack, onOpenMission, onNavigate }) {
+  const soil = window.SOIL_PROFILES.find(s => s.id === zone.soilGuess);
+  const missions = window.MISSIONS;
+  const pct = Math.round((zone.done / missions.length) * 100);
+  const status = (idx) => idx < zone.done ? 'done' : idx === zone.done ? 'current' : 'todo';
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader title={zone.name} onBack={onBack} subtitle="Ma zone"
+        right={<button className="tc-btn tc-btn--ghost" style={{ padding: 8 }}><Icon name="more" size={20} /></button>} />
+
+      {/* Hero */}
+      <div style={{ margin: '0 16px', padding: 20, borderRadius: 24,
+        background: `linear-gradient(135deg, ${soil?.hex || 'var(--tc-forest-700)'} 0%, var(--tc-forest-900) 140%)`,
+        color: '#fff', position: 'relative', overflow: 'hidden',
+      }}>
+        <div className="tc-eyebrow" style={{ color: 'rgba(255,255,255,0.7)' }}>Hypothèse de départ</div>
+        <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 28, fontWeight: 500, marginTop: 4, letterSpacing: '-0.01em' }}>
+          {soil ? `Sol ${soil.name.toLowerCase()}` : 'À diagnostiquer'}
+        </div>
+        {soil && <div style={{ fontSize: 13, opacity: 0.85, marginTop: 4, fontStyle: 'italic' }}>« {soil.tagline} »</div>}
+
+        <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6, opacity: 0.9 }}>
+              <span>Progression</span>
+              <span className="tc-mono-num">{zone.done}/{missions.length}</span>
+            </div>
+            <div style={{ height: 6, background: 'rgba(255,255,255,0.2)', borderRadius: 999, overflow: 'hidden' }}>
+              <div style={{ width: `${pct}%`, height: '100%', background: 'var(--tc-forest-200)', transition: 'width 600ms' }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Badges earned preview */}
+      <div style={{ padding: '18px 20px 6px', display: 'flex', gap: 8, overflowX: 'auto' }}>
+        {window.BADGES.map(b => {
+          const unlocked = b.need.every(id => {
+            const m = missions.find(mm => mm.id === id);
+            return m && m.idx < zone.done;
+          });
+          return (
+            <div key={b.id} style={{
+              padding: '8px 12px', borderRadius: 999, whiteSpace: 'nowrap',
+              background: unlocked ? 'var(--tc-yellow-400)' : 'var(--tc-forest-100)',
+              color: unlocked ? 'var(--tc-forest-900)' : 'var(--tc-ink-70)',
+              fontSize: 12, fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 6,
+              opacity: unlocked ? 1 : 0.6,
+            }}>
+              <span style={{ fontSize: 14 }}>{b.emoji}</span> {b.name}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Missions list */}
+      <div style={{ padding: '12px 20px' }}>
+        <h2 style={{ fontSize: 20, marginBottom: 12 }}>Missions</h2>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {missions.map((m, i) => {
+            const st = status(i);
+            return <MissionCard key={m.id} mission={m} status={st} onClick={() => onOpenMission(m.id)} />;
+          })}
+        </div>
+      </div>
+
+      <div style={{ flex: 1 }} />
+    </div>
+  );
+}
+
+function MissionCard({ mission, status, onClick }) {
+  const bg = status === 'done' ? 'var(--tc-forest-100)' :
+             status === 'current' ? '#fff' : 'var(--tc-cream)';
+  const iconBg = status === 'done' ? 'var(--tc-forest-800)' :
+                 status === 'current' ? 'var(--tc-yellow-400)' : 'var(--tc-forest-100)';
+  const iconColor = status === 'done' ? 'var(--tc-cream)' :
+                    status === 'current' ? 'var(--tc-forest-900)' : 'var(--tc-forest-800)';
+  return (
+    <button onClick={onClick}
+      style={{
+        textAlign: 'left', cursor: 'pointer', padding: '14px 16px', borderRadius: 18,
+        background: bg, display: 'flex', alignItems: 'center', gap: 14,
+        boxShadow: status === 'current' ? 'var(--tc-shadow-sm), inset 0 0 0 1.5px var(--tc-forest-800)' : 'inset 0 0 0 1px var(--tc-line)',
+      }}>
+      <div style={{
+        width: 44, height: 44, borderRadius: 14, flexShrink: 0,
+        background: iconBg, color: iconColor,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        {status === 'done'
+          ? <Icon name="check" size={22} />
+          : <Icon name={mission.icon} size={22} />}
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+          <span className="tc-mono-num" style={{ fontSize: 11, color: 'var(--tc-ink-70)', fontWeight: 600 }}>M{mission.idx}</span>
+          <span style={{ fontFamily: 'var(--tc-font-display)', fontSize: 16, fontWeight: 500, color: 'var(--tc-forest-900)' }}>{mission.name}</span>
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--tc-ink-70)', marginTop: 2 }}>{mission.sub} · {mission.est}</div>
+      </div>
+      <Icon name="arrow_right" size={18} color="var(--tc-ink-50)" />
+    </button>
+  );
+}
+
+window.ZoneScreen = ZoneScreen;
+
+// Bio-indication: search + filter + cumulative diagnosis
+function BioIndicScreen({ onBack, selected, setSelected, onConfirm }) {
+  const [query, setQuery] = React.useState('');
+  const [activeTag, setActiveTag] = React.useState(null);
+  const plants = window.PLANTS;
+
+  const filtered = plants.filter(p => {
+    if (activeTag && !p.tags.includes(activeTag)) return false;
+    if (query) {
+      const q = query.toLowerCase();
+      return p.nom.toLowerCase().includes(q) || p.sci.toLowerCase().includes(q);
+    }
+    return true;
+  });
+
+  // Cumulative diagnosis
+  const scores = {};
+  selected.forEach(id => {
+    const p = plants.find(pp => pp.id === id);
+    if (!p) return;
+    p.tags.forEach(t => { scores[t] = (scores[t] || 0) + 1; });
+  });
+  const sortedScores = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const topTag = sortedScores[0];
+
+  const filters = ['compactage', 'hydromorphisme', 'acidité', 'alcalinité', 'excès N', 'équilibre'];
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader title="Bio-indication" onBack={onBack} subtitle="Mission 1" />
+
+      {/* Search */}
+      <div style={{ padding: '4px 20px 12px' }}>
+        <div style={{ position: 'relative' }}>
+          <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--tc-ink-50)' }}>
+            <Icon name="search" size={18} />
+          </div>
+          <input className="tc-field" placeholder="Rechercher une plante…"
+            value={query} onChange={e=>setQuery(e.target.value)}
+            style={{ paddingLeft: 42 }} />
+        </div>
+      </div>
+
+      {/* Filter chips */}
+      <div style={{ padding: '0 20px 12px', display: 'flex', gap: 6, overflowX: 'auto' }}>
+        <FilterChip label="Tous" active={!activeTag} onClick={() => setActiveTag(null)} />
+        {filters.map(t => (
+          <FilterChip key={t} label={window.TAG_META[t].label} active={activeTag === t}
+            onClick={() => setActiveTag(activeTag === t ? null : t)} />
+        ))}
+      </div>
+
+      {/* Diagnostic summary (sticky) */}
+      {selected.length > 0 && (
+        <div style={{
+          margin: '0 20px 12px', padding: '14px 16px', borderRadius: 18,
+          background: 'var(--tc-forest-800)', color: 'var(--tc-cream)',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
+            <div className="tc-eyebrow" style={{ color: 'var(--tc-forest-300)' }}>Diagnostic cumulé</div>
+            <span className="tc-mono-num" style={{ fontSize: 12, fontWeight: 600 }}>{selected.length} plante{selected.length>1?'s':''}</span>
+          </div>
+          {topTag && (
+            <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 18, lineHeight: 1.25, letterSpacing: '-0.01em' }}>
+              Tendance dominante : <em style={{ color: 'var(--tc-forest-300)' }}>{window.TAG_META[topTag[0]].label.toLowerCase()}</em>
+            </div>
+          )}
+          <div style={{ marginTop: 10, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {sortedScores.slice(0,5).map(([t,c]) => (
+              <span key={t} style={{
+                padding: '4px 10px', borderRadius: 999, background: 'rgba(255,255,255,0.12)',
+                fontSize: 12, fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 6,
+              }}>{window.TAG_META[t].label} <b className="tc-mono-num">×{c}</b></span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Plant list */}
+      <div style={{ padding: '0 20px 100px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {filtered.map(p => {
+          const sel = selected.includes(p.id);
+          return (
+            <button key={p.id}
+              onClick={() => setSelected(sel ? selected.filter(x=>x!==p.id) : [...selected, p.id])}
+              style={{
+                textAlign: 'left', padding: '12px 14px', borderRadius: 16, cursor: 'pointer',
+                background: sel ? 'var(--tc-forest-50)' : '#fff',
+                boxShadow: sel ? 'inset 0 0 0 1.5px var(--tc-forest-800)' : 'inset 0 0 0 1px var(--tc-line)',
+                display: 'flex', alignItems: 'center', gap: 12,
+              }}>
+              <div style={{
+                width: 44, height: 44, borderRadius: 12, background: 'var(--tc-forest-100)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                fontSize: 22,
+              }}>{p.emoji}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--tc-forest-900)' }}>{p.nom}</div>
+                <div style={{ fontSize: 11, color: 'var(--tc-ink-70)', fontStyle: 'italic', marginBottom: 4 }}>{p.sci}</div>
+                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                  {p.tags.map(t => <TagChip key={t} tag={t} size="sm" />)}
+                </div>
+              </div>
+              <div style={{
+                width: 26, height: 26, borderRadius: 999, flexShrink: 0,
+                background: sel ? 'var(--tc-forest-800)' : 'transparent',
+                boxShadow: sel ? 'none' : 'inset 0 0 0 1.5px var(--tc-ink-25)',
+                color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>{sel && <Icon name="check" size={16} />}</div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Sticky confirm */}
+      {selected.length > 0 && (
+        <div style={{
+          position: 'sticky', bottom: 0, padding: '12px 20px 20px',
+          background: 'linear-gradient(180deg, rgba(251,250,249,0) 0%, var(--tc-cream) 30%)',
+        }}>
+          <button className="tc-btn tc-btn--primary tc-btn--lg" onClick={onConfirm}
+            style={{ width: '100%' }}>
+            Générer le diagnostic <Icon name="sparkle" size={18} />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FilterChip({ label, active, onClick }) {
+  return <button onClick={onClick}
+    style={{
+      padding: '7px 14px', borderRadius: 999, whiteSpace: 'nowrap',
+      background: active ? 'var(--tc-forest-800)' : 'transparent',
+      color: active ? 'var(--tc-cream)' : 'var(--tc-forest-800)',
+      boxShadow: active ? 'none' : 'inset 0 0 0 1px var(--tc-ink-10)',
+      fontSize: 13, fontWeight: 500, cursor: 'pointer',
+    }}>{label}</button>;
+}
+
+window.BioIndicScreen = BioIndicScreen;
+
+// Mission Boudin — guided questionnaire
+function BoudinScreen({ onBack, onFinish }) {
+  const [step, setStep] = React.useState(0);
+  const [answers, setAnswers] = React.useState({});
+
+  const questions = [
+    {
+      id: 'shape', q: "Arrivez-vous à former un boudin de terre humide ?",
+      options: [
+        { v: 'no',    label: "Non, ça s'effrite",          hint: '→ Tendance sableuse' },
+        { v: 'crack', label: "Oui mais il se fendille",     hint: '→ Limoneux' },
+        { v: 'yes',   label: "Oui, un boudin lisse et fin", hint: '→ Argileux' },
+      ],
+    },
+    {
+      id: 'ring', q: "Pouvez-vous recourber ce boudin en cerceau ?",
+      options: [
+        { v: 'no',      label: "Il casse net" },
+        { v: 'partial', label: "Il casse au milieu" },
+        { v: 'yes',     label: "Oui, cerceau parfait" },
+      ],
+    },
+    {
+      id: 'skin', q: "La terre laisse-t-elle une trace sur votre peau ?",
+      options: [
+        { v: 'clean',  label: 'Mains propres, poussière sèche' },
+        { v: 'tint',   label: 'Coloration légère (terre douce)' },
+        { v: 'sticky', label: 'Très collante, laisse une pellicule' },
+      ],
+    },
+  ];
+
+  // Classify
+  const classify = () => {
+    const { shape, ring, skin } = answers;
+    if (shape === 'no' || skin === 'clean') return 'sableux';
+    if (ring === 'yes' || (shape === 'yes' && skin === 'sticky')) return 'argileux';
+    return 'limoneux';
+  };
+
+  if (step >= questions.length) {
+    const result = classify();
+    const soil = window.SOIL_PROFILES.find(s => s.id === result);
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+        <AppHeader title="Test du Boudin" onBack={onBack} subtitle="Résultat" />
+        <div style={{ padding: 20, textAlign: 'center' }}>
+          <div className="tc-eyebrow">Verdict tactile</div>
+          <div style={{
+            margin: '20px auto', width: 140, height: 140, borderRadius: 999,
+            background: soil.hex,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <SoilGlyph profile={soil} size={90} />
+          </div>
+          <h2 style={{ fontSize: 32 }}>Sol {soil.name.toLowerCase()}</h2>
+          <div style={{ fontSize: 14, color: 'var(--tc-forest-700)', fontStyle: 'italic', marginTop: 4 }}>« {soil.tagline} »</div>
+          <div style={{ fontSize: 14, color: 'var(--tc-ink-70)', marginTop: 14, maxWidth: 300, margin: '14px auto 0' }}>
+            {soil.character}
+          </div>
+          <button className="tc-btn tc-btn--primary tc-btn--lg" onClick={()=>onFinish(result)}
+            style={{ marginTop: 28, width: '100%' }}>
+            Valider et continuer <Icon name="arrow_right" size={18} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const q = questions[step];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader title="Test du Boudin" onBack={onBack} subtitle={`Question ${step+1}/${questions.length}`} />
+
+      {/* Progress dots */}
+      <div style={{ padding: '0 20px 16px', display: 'flex', gap: 6 }}>
+        {questions.map((_, i) => (
+          <div key={i} style={{
+            flex: 1, height: 4, borderRadius: 2,
+            background: i <= step ? 'var(--tc-forest-800)' : 'var(--tc-forest-100)',
+          }} />
+        ))}
+      </div>
+
+      <div style={{ padding: '0 20px' }}>
+        <h2 style={{ fontSize: 26, letterSpacing: '-0.01em', lineHeight: 1.2 }}>{q.q}</h2>
+
+        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {q.options.map(opt => {
+            const sel = answers[q.id] === opt.v;
+            return (
+              <button key={opt.v}
+                onClick={() => {
+                  setAnswers({ ...answers, [q.id]: opt.v });
+                  setTimeout(() => setStep(step + 1), 280);
+                }}
+                style={{
+                  textAlign: 'left', padding: '16px 18px', borderRadius: 18, cursor: 'pointer',
+                  background: sel ? 'var(--tc-forest-800)' : '#fff',
+                  color: sel ? 'var(--tc-cream)' : 'var(--tc-forest-900)',
+                  boxShadow: sel ? 'var(--tc-shadow-md)' : 'inset 0 0 0 1px var(--tc-line)',
+                  transition: 'all 180ms',
+                }}>
+                <div style={{ fontSize: 16, fontWeight: 500 }}>{opt.label}</div>
+                {opt.hint && <div style={{ fontSize: 12, opacity: 0.7, marginTop: 3, fontStyle: 'italic' }}>{opt.hint}</div>}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.BoudinScreen = BoudinScreen;
+
+// Mission Bocal — sedimentation + textures triangle
+function BocalScreen({ onBack, onFinish }) {
+  const [sand, setSand] = React.useState(40);
+  const [silt, setSilt] = React.useState(30);
+  const [clay, setClay] = React.useState(15);
+  const [organic, setOrganic] = React.useState(5);
+
+  const total = sand + silt + clay + organic;
+  const pct = total ? {
+    sand: Math.round(sand/total*1000)/10,
+    silt: Math.round(silt/total*1000)/10,
+    clay: Math.round(clay/total*1000)/10,
+    organic: Math.round(organic/total*1000)/10,
+  } : { sand:0, silt:0, clay:0, organic:0 };
+
+  const classify = () => {
+    const { sand: s, silt: l, clay: c } = pct;
+    if (c >= 40) return 'Argileux';
+    if (c >= 25 && s >= 45) return 'Argilo-sableux';
+    if (c >= 25) return 'Limono-argileux';
+    if (l >= 50 && c < 15) return 'Limoneux fin';
+    if (l >= 40) return 'Limoneux demi-fin';
+    if (s >= 70) return 'Sableux';
+    return 'Limono-sableux';
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader title="Test du Bocal" onBack={onBack} subtitle="Mission 4 · Sédimentation" />
+
+      <div style={{ padding: '0 20px 20px' }}>
+        <div style={{ fontSize: 14, color: 'var(--tc-ink-70)', lineHeight: 1.5, marginBottom: 18 }}>
+          Après 24h de sédimentation, mesurez chaque strate en millimètres.
+        </div>
+
+        {/* Animated jar */}
+        <div style={{ display: 'flex', gap: 24, alignItems: 'stretch', marginBottom: 24 }}>
+          <Jar sand={sand} silt={silt} clay={clay} organic={organic} />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <StrateInput label="M.O."   value={organic} onChange={setOrganic} color="#3E2817" pct={pct.organic} />
+            <StrateInput label="Argile" value={clay} onChange={setClay} color="#8B5A3C" pct={pct.clay} />
+            <StrateInput label="Limon"  value={silt} onChange={setSilt} color="#A68961" pct={pct.silt} />
+            <StrateInput label="Sable"  value={sand} onChange={setSand} color="#D4B896" pct={pct.sand} />
+          </div>
+        </div>
+
+        {/* Triangle */}
+        <div style={{ background: '#fff', borderRadius: 20, padding: 16, boxShadow: 'var(--tc-shadow-sm)' }}>
+          <div className="tc-eyebrow" style={{ marginBottom: 8 }}>Triangle des textures</div>
+          <TextureTriangle sand={pct.sand} silt={pct.silt} clay={pct.clay} />
+          <div style={{ marginTop: 12, textAlign: 'center' }}>
+            <div className="tc-eyebrow" style={{ color: 'var(--tc-forest-500)' }}>Classification</div>
+            <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 24, fontWeight: 500, color: 'var(--tc-forest-900)', marginTop: 4 }}>
+              {classify()}
+            </div>
+          </div>
+        </div>
+
+        <button className="tc-btn tc-btn--primary tc-btn--lg" onClick={() => onFinish(classify())}
+          style={{ width: '100%', marginTop: 20 }}>
+          Enregistrer le résultat <Icon name="check" size={18} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function StrateInput({ label, value, onChange, color, pct }) {
+  return (
+    <div style={{
+      background: 'var(--tc-forest-50)', borderRadius: 14, padding: '10px 12px',
+      display: 'flex', alignItems: 'center', gap: 10,
+    }}>
+      <div style={{ width: 10, height: 36, borderRadius: 3, background: color }} />
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 12, color: 'var(--tc-ink-70)', fontWeight: 500 }}>{label}</div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+          <input type="number" value={value} onChange={e=>onChange(+e.target.value||0)}
+            style={{
+              width: 50, border: 0, background: 'transparent', padding: 0,
+              fontFamily: 'var(--tc-font-display)', fontSize: 22, fontWeight: 500,
+              color: 'var(--tc-forest-900)',
+            }} />
+          <span style={{ fontSize: 12, color: 'var(--tc-ink-70)' }}>mm</span>
+          <span className="tc-mono-num" style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--tc-forest-700)', fontWeight: 600 }}>{pct}%</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Jar({ sand, silt, clay, organic }) {
+  const total = sand + silt + clay + organic || 1;
+  const H = 300, W = 140;
+  const innerTop = 56, innerBot = H - 16;
+  const innerH = innerBot - innerTop;
+  const unit = innerH / total;
+
+  // Heights
+  const hSand = sand * unit;
+  const hSilt = silt * unit;
+  const hClay = clay * unit;
+  const hOrg  = organic * unit;
+
+  // y coords (bottom-up stack): sand at bottom, then silt, clay, organic floating on water top
+  const ySandTop = innerBot - hSand;
+  const ySiltTop = ySandTop - hSilt;
+  const yClayTop = ySiltTop - hClay;
+  // Organic floats at the top of the water (under the air)
+  const yOrgBot  = innerTop + 4;
+  const yOrgTop  = yOrgBot + hOrg * 0.6; // thin floating debris
+  // Water fills from clay top up to near the cap
+  const yWaterTop = innerTop + 4;
+
+  return (
+    <svg width="120" height={H} viewBox={`0 0 ${W} ${H}`}
+      style={{ filter: 'drop-shadow(0 8px 16px rgba(15,36,20,0.12))' }}>
+      <defs>
+        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.55"/>
+          <stop offset="0.15" stopColor="#fff" stopOpacity="0.15"/>
+          <stop offset="0.85" stopColor="#fff" stopOpacity="0.05"/>
+          <stop offset="1" stopColor="#fff" stopOpacity="0.25"/>
+        </linearGradient>
+        <linearGradient id="water2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#E8EEF0" stopOpacity="0.85"/>
+          <stop offset="0.3" stopColor="#D5E2E5" stopOpacity="0.75"/>
+          <stop offset="1" stopColor="#C2D4D8" stopOpacity="0.6"/>
+        </linearGradient>
+        <linearGradient id="sandG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#D9BE8F"/>
+          <stop offset="1" stopColor="#B99968"/>
+        </linearGradient>
+        <linearGradient id="siltG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#A68961"/>
+          <stop offset="1" stopColor="#78583A"/>
+        </linearGradient>
+        <linearGradient id="clayG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#8B5A3C"/>
+          <stop offset="1" stopColor="#5E3A26"/>
+        </linearGradient>
+        <linearGradient id="lidG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#E8E3D4"/>
+          <stop offset="1" stopColor="#B9B19C"/>
+        </linearGradient>
+        <clipPath id="jarInside">
+          <path d="M 22 46 Q 22 40 28 40 L 112 40 Q 118 40 118 46 L 118 280 Q 118 292 106 292 L 34 292 Q 22 292 22 280 Z" />
+        </clipPath>
+      </defs>
+
+      {/* Lid */}
+      <rect x="28" y="10" width="84" height="20" rx="3" fill="url(#lidG)" stroke="rgba(0,0,0,0.2)" strokeWidth="0.6"/>
+      <rect x="28" y="12" width="84" height="3" fill="rgba(0,0,0,0.12)"/>
+      <rect x="28" y="28" width="84" height="6" rx="1" fill="#9E9680"/>
+
+      {/* Jar body outline (back, for shadow) */}
+      <path d="M 24 32 L 116 32 L 116 44 Q 120 46 120 56 L 120 278 Q 120 294 104 294 L 36 294 Q 20 294 20 278 L 20 56 Q 20 46 24 44 Z"
+        fill="#F4F0E3" fillOpacity="0.35" stroke="rgba(15,36,20,0.25)" strokeWidth="1.2"/>
+
+      {/* Inside contents, clipped to jar shape */}
+      <g clipPath="url(#jarInside)">
+        {/* Water */}
+        <rect x="22" y={yWaterTop} width="96" height={innerBot - yWaterTop} fill="url(#water2)"/>
+
+        {/* Sand */}
+        <rect x="22" y={ySandTop} width="96" height={hSand} fill="url(#sandG)"/>
+        {/* sand grain speckles */}
+        {hSand > 6 && Array.from({length: 24}).map((_,i) => {
+          const rx = 24 + (i*37) % 92, ry = ySandTop + 2 + (i*19) % Math.max(hSand-4, 1);
+          return <circle key={'s'+i} cx={rx} cy={ry} r={0.7} fill="#7A5A34" opacity="0.5"/>;
+        })}
+
+        {/* Silt */}
+        <rect x="22" y={ySiltTop} width="96" height={hSilt} fill="url(#siltG)"/>
+        {/* subtle horizontal striations */}
+        {hSilt > 6 && Array.from({length: 3}).map((_,i) => (
+          <line key={'si'+i} x1="22" x2="118"
+            y1={ySiltTop + (hSilt/4)*(i+1)} y2={ySiltTop + (hSilt/4)*(i+1)}
+            stroke="#5A4228" strokeWidth="0.4" opacity="0.4"/>
+        ))}
+
+        {/* Clay */}
+        <rect x="22" y={yClayTop} width="96" height={hClay} fill="url(#clayG)"/>
+        {hClay > 6 && Array.from({length: 18}).map((_,i) => {
+          const rx = 24 + (i*41) % 92, ry = yClayTop + 1 + (i*13) % Math.max(hClay-2, 1);
+          return <circle key={'c'+i} cx={rx} cy={ry} r={0.5} fill="#3B1E10" opacity="0.55"/>;
+        })}
+
+        {/* Floating organic debris */}
+        {hOrg > 0 && (
+          <>
+            <rect x="22" y={innerTop + 2} width="96" height={Math.max(3, hOrg * 0.5)}
+              fill="#6E5233" opacity="0.85"/>
+            {Array.from({length: 10}).map((_,i) => {
+              const rx = 26 + (i*11) % 88;
+              return <ellipse key={'o'+i} cx={rx} cy={innerTop + 2 + (i%3)*1.5}
+                rx={1.6 + (i%3)*0.4} ry={0.8} fill="#8B6A3F" opacity="0.9"/>;
+            })}
+          </>
+        )}
+
+        {/* Meniscus / water surface reflection */}
+        <line x1="22" x2="118" y1={yWaterTop} y2={yWaterTop} stroke="#fff" strokeWidth="0.6" opacity="0.7"/>
+
+        {/* Glass highlight */}
+        <rect x="22" y="44" width="96" height="240" fill="url(#glass)"/>
+        <rect x="32" y="50" width="5" height="200" fill="#fff" opacity="0.35" rx="2"/>
+        <rect x="42" y="80" width="2" height="120" fill="#fff" opacity="0.18" rx="1"/>
+      </g>
+
+      {/* Jar outer outline (front, for depth) */}
+      <path d="M 24 32 L 116 32 L 116 44 Q 120 46 120 56 L 120 278 Q 120 294 104 294 L 36 294 Q 20 294 20 278 L 20 56 Q 20 46 24 44 Z"
+        fill="none" stroke="rgba(15,36,20,0.35)" strokeWidth="1.4"/>
+
+      {/* Layer tick marks on the right */}
+      {[
+        { y: ySandTop, v: sand, label: 'sable' },
+        { y: ySiltTop, v: silt, label: 'limon' },
+        { y: yClayTop, v: clay, label: 'argile' },
+      ].map((t,i) => t.v > 0 && (
+        <g key={i}>
+          <line x1="120" x2="128" y1={t.y} y2={t.y} stroke="var(--tc-forest-800)" strokeWidth="0.8"/>
+          <text x="131" y={t.y + 3} fontSize="8" fill="var(--tc-forest-800)"
+            fontFamily="var(--tc-font-body)" fontWeight="600">{Math.round(t.v)}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function TextureTriangle({ sand, silt, clay }) {
+  const W = 320, H = 300, pad = 30;
+  // Corners: clay (top), sand (bottom-left), silt (bottom-right)
+  const A = { x: W/2,     y: pad };        // 100% argile
+  const B = { x: pad,     y: H - pad };    // 100% sable
+  const C = { x: W - pad, y: H - pad };    // 100% limon
+  // barycentric (c=clay, s=sand, l=silt, c+s+l=1) → cartesian
+  const P = (c, s, l) => ({
+    x: A.x*c + B.x*s + C.x*l,
+    y: A.y*c + B.y*s + C.y*l,
+  });
+  // GEPPA-style zones (c, s, l values) polygons — values sum to 1
+  // Order: from top to bottom
+  const zones = [
+    {
+      name: 'Argileux', color: '#A8D0E6',
+      pts: [[1,0,0],[0.6,0,0.4],[0.6,0.4,0]],
+    },
+    {
+      name: 'Argilo-sableux', color: '#7EAEDC',
+      pts: [[0.6,0.4,0],[0.3,0.7,0],[0.3,0.45,0.25],[0.45,0.3,0.25]],
+    },
+    {
+      name: 'Limono-argileux', color: '#9DB4E0',
+      pts: [[0.6,0.4,0],[0.45,0.3,0.25],[0.3,0.25,0.45],[0.3,0,0.7],[0.6,0,0.4]],
+    },
+    {
+      name: 'Limono-sableux', color: '#C8E0B0',
+      pts: [[0.3,0.7,0],[0.15,0.85,0],[0.15,0.6,0.25],[0.3,0.45,0.25]],
+    },
+    {
+      name: 'Limoneux fin', color: '#B4D88C',
+      pts: [[0.3,0.25,0.45],[0.15,0.3,0.55],[0.15,0.1,0.75],[0.3,0,0.7]],
+    },
+    {
+      name: 'Limoneux demi-fin', color: '#8BC37A',
+      pts: [[0.3,0.45,0.25],[0.15,0.6,0.25],[0.15,0.3,0.55],[0.3,0.25,0.45]],
+    },
+    {
+      name: 'Sableux', color: '#E0D884',
+      pts: [[0.15,0.85,0],[0,1,0],[0,0.85,0.15],[0.15,0.6,0.25]],
+    },
+  ];
+
+  const fmt = pts => pts.map(([c,s,l]) => {
+    const p = P(c,s,l);
+    return p.x.toFixed(1)+','+p.y.toFixed(1);
+  }).join(' ');
+
+  // Current point
+  const c = clay/100, s = sand/100, l = silt/100;
+  const tot = c+s+l || 1;
+  const pt = P(c/tot, s/tot, l/tot);
+
+  // Which zone is the point in? (simple label match by thresholds)
+  const zoneOf = () => {
+    const cp = c/tot*100, sp = s/tot*100, lp = l/tot*100;
+    if (cp >= 60) return 'Argileux';
+    if (cp >= 30 && sp >= 30) return 'Argilo-sableux';
+    if (cp >= 30) return 'Limono-argileux';
+    if (cp >= 15 && sp >= 60) return 'Limono-sableux';
+    if (cp >= 15 && lp >= 55) return 'Limoneux fin';
+    if (cp >= 15) return 'Limoneux demi-fin';
+    if (sp >= 85) return 'Sableux';
+    return 'Limoneux demi-fin';
+  };
+  const current = zoneOf();
+
+  // Grid lines (every 20%)
+  const gridLines = [];
+  [20, 40, 60, 80].forEach(v => {
+    const t = v/100;
+    // lines parallel to each side
+    const a1 = P(1-t, t, 0), a2 = P(1-t, 0, t);
+    const b1 = P(t, 1-t, 0), b2 = P(0, 1-t, t);
+    const c1 = P(t, 0, 1-t), c2 = P(0, t, 1-t);
+    gridLines.push([a1,a2],[b1,b2],[c1,c2]);
+  });
+
+  return (
+    <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block' }}>
+      {/* Zones */}
+      {zones.map(z => (
+        <polygon key={z.name} points={fmt(z.pts)}
+          fill={z.color}
+          fillOpacity={z.name === current ? 1 : 0.55}
+          stroke="rgba(27,28,26,0.25)" strokeWidth="0.6" />
+      ))}
+      {/* Outer triangle */}
+      <polygon points={`${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}`}
+        fill="none" stroke="var(--tc-forest-900)" strokeWidth="1.4"/>
+      {/* Grid */}
+      {gridLines.map((ln, i) => (
+        <line key={i} x1={ln[0].x} y1={ln[0].y} x2={ln[1].x} y2={ln[1].y}
+          stroke="rgba(27,28,26,0.18)" strokeWidth="0.4" strokeDasharray="2 2"/>
+      ))}
+      {/* Zone names at centroids */}
+      {zones.map(z => {
+        const cx = z.pts.reduce((a,p)=>a+P(p[0],p[1],p[2]).x,0)/z.pts.length;
+        const cy = z.pts.reduce((a,p)=>a+P(p[0],p[1],p[2]).y,0)/z.pts.length;
+        const isCurrent = z.name === current;
+        // Split long names into 2 lines
+        const words = z.name.split(/[-\s]/);
+        const lines = words.length >= 2 ? [words[0] + (z.name.includes('-') ? '-' : ''), words.slice(1).join(' ')] : [z.name];
+        return (
+          <g key={'lbl'+z.name}>
+            {lines.map((ln, i) => (
+              <text key={i} x={cx} y={cy + (i - (lines.length-1)/2) * 8}
+                textAnchor="middle" fontSize="7.5"
+                fill={isCurrent ? 'var(--tc-forest-900)' : 'rgba(15,36,20,0.75)'}
+                fontWeight={isCurrent ? 700 : 500}
+                fontFamily="var(--tc-font-body)"
+                style={{ pointerEvents: 'none' }}>
+                {ln}
+              </text>
+            ))}
+          </g>
+        );
+      })}
+      {/* Axis labels */}
+      <text x={A.x} y={A.y-10} textAnchor="middle" fontSize="9"
+        fill="var(--tc-forest-900)" fontWeight="700"
+        style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>ARGILE</text>
+      <text x={B.x-4} y={B.y+18} textAnchor="start" fontSize="9"
+        fill="var(--tc-forest-900)" fontWeight="700"
+        style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>SABLE</text>
+      <text x={C.x+4} y={C.y+18} textAnchor="end" fontSize="9"
+        fill="var(--tc-forest-900)" fontWeight="700"
+        style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>LIMON</text>
+      {/* Point */}
+      <circle cx={pt.x} cy={pt.y} r="14" fill="var(--tc-forest-800)" opacity="0.18"/>
+      <circle cx={pt.x} cy={pt.y} r="6.5" fill="var(--tc-forest-800)" stroke="#fff" strokeWidth="2"
+        style={{ transition: 'cx 400ms, cy 400ms' }} />
+      {/* Current zone label */}
+      <text x={W/2} y={H-6} textAnchor="middle" fontSize="10"
+        fill="var(--tc-forest-800)" fontStyle="italic">{current}</text>
+    </svg>
+  );
+}
+
+window.BocalScreen = BocalScreen;
+
+// Final dashboard — summary, recommendations, badges
+function DashboardScreen({ zone, selectedPlants, bocalResult, boudinResult, onBack }) {
+  const soil = window.SOIL_PROFILES.find(s => s.id === (boudinResult || zone.soilGuess));
+  const plants = (selectedPlants || []).map(id => window.PLANTS.find(p => p.id === id)).filter(Boolean);
+
+  // Top bio tag
+  const scores = {};
+  plants.forEach(p => p.tags.forEach(t => scores[t] = (scores[t]||0) + 1));
+  const topTags = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+
+  const recs = [];
+  if (boudinResult === 'argileux') recs.push({ title: 'Sablage de structure', body: 'Apport de sables grossiers pour favoriser l\'infiltration.', dose: '5–10 kg/m²' });
+  if (topTags.some(([t])=>t==='acidité')) recs.push({ title: 'Redressement du pH', body: 'Chaux, calcaire broyé ou algues calcifiées.', dose: '300–600 g/m²' });
+  recs.push({ title: 'Régénération par l\'humus', body: 'Compost mûr ou terreau de feuilles, tous les 1–3 ans.', dose: '3–5 kg/m²' });
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
+      <AppHeader title="Diagnostic" onBack={onBack} subtitle={zone.name} theme="forest" />
+
+      {/* Hero verdict */}
+      <div style={{ background: 'var(--tc-forest-800)', color: 'var(--tc-cream)', padding: '0 20px 28px' }}>
+        <div className="tc-eyebrow" style={{ color: 'var(--tc-forest-300)' }}>Verdict</div>
+        <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 34, lineHeight: 1.1, letterSpacing: '-0.02em', marginTop: 6 }}>
+          Votre sol est <em style={{ color: 'var(--tc-forest-300)' }}>{bocalResult?.toLowerCase() || (soil ? soil.name.toLowerCase() : '—')}</em>
+        </div>
+        <div style={{ fontSize: 14, marginTop: 10, opacity: 0.85, lineHeight: 1.5 }}>
+          {plants.length > 0
+            ? `Les ${plants.length} plante${plants.length>1?'s':''} observée${plants.length>1?'s':''} révèlent une tendance ${topTags[0] ? window.TAG_META[topTags[0][0]].label.toLowerCase() : 'équilibrée'}.`
+            : 'Poursuivez les tests pour affiner le diagnostic.'}
+        </div>
+
+        {/* Carbon badge */}
+        <div style={{ marginTop: 18, padding: '10px 14px', background: 'rgba(255,255,255,0.08)', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ fontSize: 20 }}>🌍</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--tc-forest-300)' }}>Score carbone</div>
+            <div style={{ fontSize: 13, marginTop: 2 }}>Potentiel de séquestration <b>modéré</b></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tests summary */}
+      <div style={{ padding: '20px 20px 8px' }}>
+        <h2 style={{ fontSize: 20, marginBottom: 12 }}>Ce qu'on a appris</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {boudinResult && <SummaryLine label="Texture — Boudin" value={`Sol ${boudinResult}`} />}
+          {bocalResult && <SummaryLine label="Texture — Bocal" value={bocalResult} />}
+          {plants.length > 0 && <SummaryLine label="Bio-indication" value={`${plants.length} plantes identifiées`} />}
+          {topTags[0] && <SummaryLine label="Tendance dominante" value={window.TAG_META[topTags[0][0]].label} />}
+        </div>
+      </div>
+
+      {/* Recommendations */}
+      <div style={{ padding: '20px 20px 8px' }}>
+        <h2 style={{ fontSize: 20, marginBottom: 12 }}>Amendements conseillés</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {recs.map((r,i) => (
+            <div key={i} style={{
+              padding: 16, borderRadius: 18, background: '#fff',
+              boxShadow: 'var(--tc-shadow-sm)',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 16, fontWeight: 500, color: 'var(--tc-forest-900)' }}>{r.title}</div>
+                <span style={{ fontSize: 11, padding: '3px 8px', borderRadius: 999, background: 'var(--tc-yellow-400)', color: 'var(--tc-forest-900)', fontWeight: 600, whiteSpace: 'nowrap' }}>{r.dose}</span>
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--tc-ink-70)', marginTop: 6, lineHeight: 1.5 }}>{r.body}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Export */}
+      <div style={{ padding: '20px 20px 28px', display: 'flex', gap: 10 }}>
+        <button className="tc-btn tc-btn--outline" style={{ flex: 1 }}>
+          <Icon name="book" size={16} /> PDF
+        </button>
+        <button className="tc-btn tc-btn--primary" style={{ flex: 1 }}>
+          <Icon name="check" size={16} /> Enregistrer
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SummaryLine({ label, value }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      padding: '12px 14px', borderRadius: 14, background: 'var(--tc-cream-2)',
+    }}>
+      <span className="tc-eyebrow">{label}</span>
+      <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--tc-forest-900)' }}>{value}</span>
+    </div>
+  );
+}
+
+window.DashboardScreen = DashboardScreen;
+
+
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "accent": "forest",
+  "triangleStyle": "clean",
+  "cardStyle": "soft"
+}/*EDITMODE-END*/;
+
+const INITIAL_ZONES = [
+  { id: 'z1', name: 'Le Carré des Aromates', area: '~ 8 m²', exposure: 'Plein soleil', soilGuess: 'calcaire', created: 'il y a 3 jours', done: 3 },
+  { id: 'z2', name: 'Verger Nord',           area: '~ 45 m²', exposure: 'Mi-ombre',    soilGuess: 'argileux', created: 'il y a 2 sem.', done: 6 },
+  { id: 'z3', name: 'Prairie humide',        area: '~ 80 m²', exposure: 'Ombre',       soilGuess: 'humifere', created: 'il y a 1 mois', done: 1 },
+];
+
+function App() {
+  const [route, setRoute] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('tc.route')) || { screen: 'home' }; }
+    catch { return { screen: 'home' }; }
+  });
+  const [zones, setZones] = useState(INITIAL_ZONES);
+  const [selectedPlants, setSelectedPlants] = useState(['ortie','plantain','chiendent']);
+  const [tab, setTab] = useState('home');
+  const [boudinResult, setBoudinResult] = useState(null);
+  const [bocalResult, setBocalResult] = useState(null);
+  const [tweaks, setTweaks] = useState(TWEAKS);
+  const [tweaksOpen, setTweaksOpen] = useState(false);
+
+  useEffect(() => { localStorage.setItem('tc.route', JSON.stringify(route)); }, [route]);
+
+  // Apply accent
+  useEffect(() => {
+    const accents = {
+      forest:    { a: 'var(--tc-forest-800)', l: 'var(--tc-forest-100)' },
+      terracotta:{ a: 'var(--tc-terra-600)', l: 'var(--tc-terra-100)' },
+      ocre:      { a: 'var(--tc-ocre-500)', l: 'var(--tc-ocre-200)' },
+    };
+    const cfg = accents[tweaks.accent] || accents.forest;
+    document.documentElement.style.setProperty('--tc-accent', cfg.a);
+    document.documentElement.style.setProperty('--tc-accent-light', cfg.l);
+  }, [tweaks.accent]);
+
+  // Tweaks host protocol
+  useEffect(() => {
+    const handler = (e) => {
+      if (!e.data || typeof e.data !== 'object') return;
+      if (e.data.type === '__activate_edit_mode') setTweaksOpen(true);
+      if (e.data.type === '__deactivate_edit_mode') setTweaksOpen(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  const updateTweak = (k, v) => {
+    const next = { ...tweaks, [k]: v };
+    setTweaks(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+  };
+
+  const currentZone = zones.find(z => z.id === route.zoneId);
+
+  const go = (screen, extra = {}) => setRoute({ screen, ...extra });
+
+  const addZone = (z) => {
+    setZones([z, ...zones]);
+    go('zone', { zoneId: z.id });
+  };
+
+  let screen;
+  if (route.screen === 'home') {
+    screen = <HomeScreen zones={zones}
+      onCreate={() => go('create')}
+      onOpenZone={(id) => go('zone', { zoneId: id })}
+      onNavigate={(t) => { setTab(t); if (t === 'plants') go('bioindic', { zoneId: null }); }} />;
+  } else if (route.screen === 'create') {
+    screen = <CreateZoneScreen onBack={() => go('home')} onCreate={addZone} />;
+  } else if (route.screen === 'zone' && currentZone) {
+    screen = <ZoneScreen zone={currentZone}
+      onBack={() => go('home')}
+      onOpenMission={(mid) => {
+        if (mid === 'm1') go('bioindic', { zoneId: currentZone.id });
+        else if (mid === 'm3') go('boudin', { zoneId: currentZone.id });
+        else if (mid === 'm4') go('bocal', { zoneId: currentZone.id });
+        else if (mid === 'm7' || currentZone.done >= 4) go('dashboard', { zoneId: currentZone.id });
+        else alert('Mission à venir dans le prototype');
+      }}
+      onNavigate={(t) => setTab(t)} />;
+  } else if (route.screen === 'bioindic') {
+    screen = <BioIndicScreen
+      onBack={() => go(currentZone ? 'zone' : 'home', { zoneId: route.zoneId })}
+      selected={selectedPlants} setSelected={setSelectedPlants}
+      onConfirm={() => {
+        if (currentZone) {
+          setZones(zones.map(z => z.id === currentZone.id ? {...z, done: Math.max(z.done, 2)} : z));
+          go('zone', { zoneId: currentZone.id });
+        } else go('home');
+      }} />;
+  } else if (route.screen === 'boudin') {
+    screen = <BoudinScreen
+      onBack={() => go('zone', { zoneId: route.zoneId })}
+      onFinish={(r) => { setBoudinResult(r);
+        setZones(zones.map(z => z.id === currentZone.id ? {...z, done: Math.max(z.done, 4)} : z));
+        go('zone', { zoneId: currentZone.id });
+      }} />;
+  } else if (route.screen === 'bocal') {
+    screen = <BocalScreen
+      onBack={() => go('zone', { zoneId: route.zoneId })}
+      onFinish={(r) => { setBocalResult(r);
+        setZones(zones.map(z => z.id === currentZone.id ? {...z, done: Math.max(z.done, 5)} : z));
+        go('dashboard', { zoneId: currentZone.id });
+      }} />;
+  } else if (route.screen === 'dashboard' && currentZone) {
+    screen = <DashboardScreen zone={currentZone}
+      selectedPlants={selectedPlants}
+      bocalResult={bocalResult} boudinResult={boudinResult}
+      onBack={() => go('zone', { zoneId: currentZone.id })} />;
+  } else {
+    screen = <HomeScreen zones={zones} onCreate={() => go('create')}
+      onOpenZone={(id) => go('zone', { zoneId: id })}
+      onNavigate={() => {}} />;
+  }
+
+  return (
+    <div>
+      <PhoneFrame>{screen}</PhoneFrame>
+      {tweaksOpen && <TweaksPanel tweaks={tweaks} update={updateTweak} />}
+    </div>
+  );
+}
+
+function TweaksPanel({ tweaks, update }) {
+  return (
+    <div style={{
+      position: 'fixed', bottom: 20, right: 20, width: 260, zIndex: 1000,
+      background: '#fff', borderRadius: 18, padding: 16,
+      boxShadow: '0 24px 48px rgba(15,36,20,0.2)',
+    }}>
+      <div style={{ fontFamily: 'var(--tc-font-display)', fontSize: 16, fontWeight: 500, marginBottom: 12 }}>Tweaks</div>
+
+      <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#888', marginBottom: 6 }}>Couleur d'accent</div>
+      <div style={{ display: 'flex', gap: 6, marginBottom: 14 }}>
+        {[
+          { k: 'forest', c: '#23442A', l: 'Forêt' },
+          { k: 'terracotta', c: '#B85A00', l: 'Terracotta' },
+          { k: 'ocre', c: '#9C8D56', l: 'Ocre' },
+        ].map(o => (
+          <button key={o.k} onClick={() => update('accent', o.k)}
+            style={{
+              flex: 1, padding: '8px 6px', borderRadius: 10, cursor: 'pointer',
+              background: o.c, color: '#fff', fontSize: 11, fontWeight: 500,
+              border: tweaks.accent === o.k ? '2px solid #000' : '2px solid transparent',
+            }}>{o.l}</button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

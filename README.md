@@ -25,6 +25,8 @@ Les sources de travail des outils sont dans le dépôt privé `PCD-Equipe/permac
 |---|---|
 | Simulateur assainissement | https://pcd-equipe.github.io/pcd-embeds/simulateur-assainissement.html |
 | Toilette (*TLB*) | https://pcd-equipe.github.io/pcd-embeds/toilette/ |
+| Pollinisation (20 fruitiers) | https://pcd-equipe.github.io/pcd-embeds/pollinisation/ |
+| TerraCheck (diagnostic du sol) | https://pcd-equipe.github.io/pcd-embeds/terracheck/ |
 
 ### Maquettes de CPT
 
