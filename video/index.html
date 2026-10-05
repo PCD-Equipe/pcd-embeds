@@ -320,6 +320,22 @@
   .ctx-ind{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 11px;white-space:nowrap}
   .ctx-ind b{color:var(--green-dd);font-weight:700}
   .stage.show-acf .sw-acf{background:#3A6B8C}
+  /* panneau « fiche back-office » : champs ACF remplis pour l'exemple affiché */
+  .acf-panel{display:none;margin:18px 0 6px;background:#F3F7FA;border:1px dashed #7AA6C6;border-radius:12px;padding:16px 18px;color:#23384A}
+  .stage.show-acf .acf-panel{display:block}
+  .acf-panel .acf-h{font:700 14px var(--sans);color:#2C5470;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+  .acf-panel .acf-sub{font-size:12.5px;color:#557086;margin-bottom:12px}
+  .acf-grid{display:grid;gap:14px}
+  .stage.format-desktop .acf-grid{grid-template-columns:1fr 1fr}
+  .acf-grp{background:#fff;border:1px solid #D5E3EC;border-radius:9px;padding:10px 12px;min-width:0}
+  .acf-gt{font:700 11.5px var(--sans);text-transform:uppercase;letter-spacing:.05em;color:#557086;margin-bottom:6px}
+  .acf-row{display:grid;grid-template-columns:minmax(120px,40%) 1fr;gap:4px 10px;padding:5px 0;border-top:1px solid #EEF3F6;font-size:12.5px;line-height:1.4}
+  .acf-row:first-of-type{border-top:0}
+  .acf-row code{font:500 11.5px ui-monospace,Menlo,Consolas,monospace;color:#2C5470;word-break:break-word}
+  .acf-row .acf-v{color:#23384A;word-break:break-word}
+  .acf-row.vide .acf-v{color:#9AA9B5;font-style:italic}
+  .acf-tag{display:inline-block;margin-left:6px;font:600 10px var(--sans);padding:1px 6px;border-radius:999px;background:#FFF1C9;color:#7A5A00;vertical-align:1px}
+  .acf-tag.calc{background:#E3EEF6;color:#2C5470}
 
   /* ===== V2 : gates de rôle (verrous) ===== */
   [data-gate]{display:none!important}
@@ -351,6 +367,8 @@
   .stage.show-acf [data-acf],.stage.show-acf [data-acf-bl]{outline:1px dashed #7AA6C6;outline-offset:2px;border-radius:8px}
   .stage.show-acf [data-acf]{position:relative}
   .stage.show-acf [data-acf]::after{content:attr(data-acf);position:absolute;right:5px;bottom:5px;z-index:30;font:400 10px ui-monospace,Menlo,Consolas,monospace;letter-spacing:0;background:rgba(58,107,140,.14);color:#2C5470;border:1px solid rgba(58,107,140,.3);padding:2px 6px;border-radius:5px;pointer-events:none}
+  /* le lecteur a déjà un ::after plein cadre : on repositionne l'étiquette et on la rend lisible sur fond sombre */
+  .stage.show-acf .player[data-acf]::after{inset:auto;top:auto;left:auto;right:8px;bottom:8px;max-width:calc(100% - 16px);white-space:normal;background:rgba(255,255,255,.92);z-index:30}
   .stage.show-acf [data-acf-bl]::after{content:attr(data-acf-bl);position:absolute;left:5px;bottom:5px;z-index:30;font:400 10px ui-monospace,Menlo,Consolas,monospace;letter-spacing:0;background:rgba(255,255,255,.92);color:#2C5470;border:1px solid rgba(58,107,140,.3);padding:2px 6px;border-radius:5px;pointer-events:none}
 
   /* ===== V4 : toggles ARV + contributeur ===== */
@@ -637,6 +655,21 @@
       </div>
     </div>
   </div>
+
+  <div class="acf-panel" data-screen-label="Fiche back-office">
+    <div class="acf-h"><i data-lucide="database" style="width:16px;height:16px"></i>Fiche back-office : champs ACF de cet exemple</div>
+    <div class="acf-sub">Les valeurs suivent les réglages du haut : ARV lié, contributeur, hébergement.</div>
+    <div class="acf-grid">
+      <sc-for list="{{ acfM1 }}" as="g" hint-placeholder-count="4">
+        <div class="acf-grp">
+          <div class="acf-gt">{{ g.title }}</div>
+          <sc-for list="{{ g.rows }}" as="r">
+            <div class="acf-row {{ r.cls }}"><code>{{ r.k }}</code><span class="acf-v">{{ r.v }}<sc-if value="{{ r.tag }}" hint-placeholder-val=""><span class="acf-tag {{ r.tagCls }}">{{ r.tag }}</span></sc-if></span></div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
   </div><!-- /module m1 -->
 
   <!-- ============================================================= -->
@@ -840,6 +873,21 @@
       </div>
     </div>
   </div>
+
+  <div class="acf-panel" data-screen-label="Fiche back-office">
+    <div class="acf-h"><i data-lucide="database" style="width:16px;height:16px"></i>Fiche back-office : champs ACF de cet exemple</div>
+    <div class="acf-sub">Même fiche que la maquette 1 : une vidéo n’a qu’une fiche, quel que soit l’endroit où elle s’affiche.</div>
+    <div class="acf-grid">
+      <sc-for list="{{ acfM1 }}" as="g" hint-placeholder-count="4">
+        <div class="acf-grp">
+          <div class="acf-gt">{{ g.title }}</div>
+          <sc-for list="{{ g.rows }}" as="r">
+            <div class="acf-row {{ r.cls }}"><code>{{ r.k }}</code><span class="acf-v">{{ r.v }}<sc-if value="{{ r.tag }}" hint-placeholder-val=""><span class="acf-tag {{ r.tagCls }}">{{ r.tag }}</span></sc-if></span></div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
   </div><!-- /module m2 -->
 
   <!-- ============================================================= -->
@@ -961,6 +1009,21 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="acf-panel" data-screen-label="Fiche back-office">
+    <div class="acf-h"><i data-lucide="database" style="width:16px;height:16px"></i>Fiche back-office : champs ACF de cet exemple</div>
+    <div class="acf-sub">Leçon de formation hébergée sur Vimeo, ouverte aux clients du PN et aux membres de L’Atelier.</div>
+    <div class="acf-grid">
+      <sc-for list="{{ acfM4 }}" as="g" hint-placeholder-count="4">
+        <div class="acf-grp">
+          <div class="acf-gt">{{ g.title }}</div>
+          <sc-for list="{{ g.rows }}" as="r">
+            <div class="acf-row {{ r.cls }}"><code>{{ r.k }}</code><span class="acf-v">{{ r.v }}<sc-if value="{{ r.tag }}" hint-placeholder-val=""><span class="acf-tag {{ r.tagCls }}">{{ r.tag }}</span></sc-if></span></div>
+          </sc-for>
+        </div>
+      </sc-for>
     </div>
   </div>
   </div><!-- /module m4 -->
@@ -1171,6 +1234,92 @@ class Component extends DCLogic {
     const cc = this.state.contribCase;
     const mkLock = (access) => ({ locked: !canSee[access](), lockLabel: access === 'payant' ? 'Réservé à l’Atelier' : access === 'pn' ? 'Formation ou Atelier' : 'Compte gratuit requis' });
 
+    // ---- fiche back-office : champs ACF remplis ----
+    const host = this.state.host;
+    const V = (k, v, extra) => Object.assign({ k: k, v: v === '' ? '(vide)' : v, cls: v === '' ? 'vide' : '', tag: '', tagCls: '' }, extra || {});
+    const calc = { tag: 'calculé', tagCls: 'calc' };
+    const neuf = { tag: 'proposé 05/10', tagCls: '' };
+    const acfM1 = [
+      { title: '1. Sources et accès', rows: [
+        V('video_source', host),
+        V('youtube_id', host === 'youtube' ? 'ID de la vidéo sur la chaîne (11 caractères)' : ''),
+        V('vimeo_id', host === 'vimeo' ? 'ID de la vidéo privée' : '', neuf),
+        V('extrait_vimeo_id', '', neuf),
+        V('statut_publication', 'public'),
+        V('acces_membre', 'gratuit'),
+        V('pn_requis', '', neuf),
+        V('verrou_type', 'temporel_25'),
+        V('lecture_partielle', 'sans objet (verrou temporel)', neuf),
+        V('is_indexable', ha ? 'false : ARV lié, l’ARV est l’URL canonique' : 'true : pas d’ARV', calc),
+      ]},
+      { title: '2. Contenu et relations', rows: [
+        V('has_article', ha ? 'ARV « Le mulch en permaculture : BRF, paillage et broyeur »' : ''),
+        V('has_formation', ''),
+        V('has_transcription', 'true', calc),
+        V('transcription', 'Texte Whisper complet'),
+        V('resume_court', 'Pourquoi couvrir le sol, quel paillage choisir, comment faire son BRF (150 mots au plus)'),
+        V('chapitres', '6 chapitres : Introduction, Comprendre le rôle du mulch, BRF : fabrication et maturation…'),
+        V('plantes_citees', 'Consoude, Ortie, Luzerne, Bourrache'),
+        V('livres_recommandes', 'Introduction à la permaculture, Le sol vivant, Le BRF, une révolution'),
+        V('techniques_associees', 'Paillage, Compostage de surface, Fabrication du BRF, Buttes de culture'),
+        V('videos_similaires', 'Le BRF de A à Z, Compost thermophile, Nourrir un sol vivant, Buttes de culture'),
+      ]},
+      { title: '3. Métadonnées', rows: [
+        V('duree', '1104 (18 min 24)'),
+        V('date_publication_yt', host === 'youtube' ? '2026-02-04' : ''),
+        V('auteur_principal', cc === 1 ? 'Permaculture Design' : ''),
+        V('credit_intervenant_texte', cc === 2 ? 'Avec Marie L., maraîchère' : ''),
+        V('format', 'tutoriel'),
+        V('thematiques', 'Sol & fertilité'),
+        V('niveau', 'débutant'),
+        V('langue', 'fr'),
+      ]},
+      { title: '4. RAG', rows: [
+        V('chunks_ready', 'true'),
+        V('version_rag', '2026-03-18'),
+        V('metadata_json', 'Export pour le pipeline n8n'),
+      ]},
+    ];
+    const acfM4 = [
+      { title: '1. Sources et accès', rows: [
+        V('video_source', 'vimeo'),
+        V('youtube_id', ''),
+        V('vimeo_id', 'ID de la vidéo complète, privée, lecture limitée au domaine', neuf),
+        V('extrait_vimeo_id', 'ID de l’extrait de 2 min, monté à part', neuf),
+        V('statut_publication', 'public'),
+        V('acces_membre', 'pn'),
+        V('pn_requis', 'Concevoir sa forêt comestible', neuf),
+        V('verrou_type', 'categoriel'),
+        V('lecture_partielle', 'extrait', neuf),
+        V('is_indexable', 'true : pas d’ARV', calc),
+      ]},
+      { title: '2. Contenu et relations', rows: [
+        V('has_article', ''),
+        V('has_formation', 'Concevoir sa forêt comestible (leçon 3 sur 12)'),
+        V('has_transcription', 'true', calc),
+        V('transcription', 'Texte Whisper complet (servi seulement à qui a accès)'),
+        V('resume_court', 'Lire son terrain, puis répartir les strates de la canopée au couvre-sol (150 mots au plus)'),
+        V('chapitres', ''),
+        V('videos_similaires', 'Leçon 2 · Lire son terrain, Leçon 4 · Les guildes'),
+        V('ressources_complementaires', 'Fiche de synthèse (PDF), grille d’observation'),
+      ]},
+      { title: '3. Métadonnées', rows: [
+        V('duree', '1450 (24 min 10)'),
+        V('date_publication_yt', ''),
+        V('auteur_principal', 'Permaculture Design'),
+        V('credit_intervenant_texte', ''),
+        V('format', 'formation'),
+        V('thematiques', 'Vergers & jardin-forêt'),
+        V('niveau', 'intermédiaire'),
+        V('langue', 'fr'),
+      ]},
+      { title: '4. RAG', rows: [
+        V('chunks_ready', 'true'),
+        V('version_rag', '2026-10-05'),
+        V('metadata_json', 'Export pour le pipeline n8n, avec acces_membre et pn_requis'),
+      ]},
+    ];
+
     const chapStyle = (active) => active
       ? 'background:#EAF2EA;box-shadow:inset 3px 0 0 #4A7C59;'
       : '';
@@ -1275,6 +1424,7 @@ class Component extends DCLogic {
       setMock: this.setMock.bind(this),
       setRole: this.setRole.bind(this),
       setHost: this.setHost.bind(this),
+      acfM1, acfM4,
       toggleAcf: this.toggleAcf.bind(this),
       roleLabel,
       toggleChapM1: this.toggleChapM1.bind(this),
