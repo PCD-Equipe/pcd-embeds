@@ -21,12 +21,12 @@ Les sources de travail des outils sont dans le dépôt privé `PCD-Equipe/permac
 
 ### Outils
 
-| Outil | URL |
+Les outils sont publiés sur https://pcd-outils.pages.dev (mot de passe commun), depuis le dépôt privé `permaculture-design-outils`.
+Les anciennes copies publiques (assainissement, pollinisation, TerraCheck) ont été retirées le 20 octobre 2026 et archivées dans `pcd-site/docs/historique/maquettes-pcd-embeds/outils-copies-2026-10/`.
+
+| Maquette | URL |
 |---|---|
-| Simulateur assainissement | https://pcd-equipe.github.io/pcd-embeds/simulateur-assainissement.html |
 | Toilette (*TLB*) | https://pcd-equipe.github.io/pcd-embeds/toilette/ |
-| Pollinisation (20 fruitiers) | https://pcd-equipe.github.io/pcd-embeds/pollinisation/ |
-| TerraCheck (diagnostic du sol) | https://pcd-equipe.github.io/pcd-embeds/terracheck/ |
 
 ### Maquettes de CPT
 
