@@ -37,12 +37,8 @@ Les anciennes copies publiques (assainissement, pollinisation, TerraCheck) ont �
 | Glossaire | https://pcd-equipe.github.io/pcd-embeds/glossaire/ | Référence |
 | Fiche recette (*Crukies*) | https://pcd-equipe.github.io/pcd-embeds/fiche-recette.html | Référence |
 | Contributeur | https://pcd-equipe.github.io/pcd-embeds/contributeur.html | Référence |
-| Fiche livre (*Le Guide de la Permaculture*) | https://pcd-equipe.github.io/pcd-embeds/fiche-livre.html | Périmée (bandeau) |
-| Page auteur du livre | https://pcd-equipe.github.io/pcd-embeds/livre-auteur.html | Périmée (bandeau) |
-| Carte compacte (livre) | https://pcd-equipe.github.io/pcd-embeds/carte-compacte.html | Périmée (bandeau) |
 
-Les maquettes livre ont été remplacées par le template Bricks de la fiche livre (dépôt `pcd-site`).
-Elles restent en ligne parce que les onglets Rendu des CPT Livres et Auteurs les intègrent encore.
+Les maquettes livre (fiche, page auteur, carte compacte), remplacées par les templates Bricks, ont été retirées le 21 octobre 2026 avec leurs images (`assets/livre/`) ; copies dans `pcd-site/docs/historique/maquettes-pcd-embeds/livres-2026-10/`.
 
 Retirées le 5 octobre 2026 (copies dans `pcd-site/docs/historique/maquettes-pcd-embeds/`) :
 `variete/` (CPT Variétés abandonné) et `contributeur-print.html` (intégré nulle part).
